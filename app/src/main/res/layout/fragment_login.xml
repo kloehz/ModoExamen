@@ -1,14 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.presentation.view.LoginFragment">
+    tools:context=".login.presentation.view.LoginFragment"
+    android:paddingHorizontal="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="asdasdasdadsaasdasdasda" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="16dp">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/circle_background"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#03FCB6" />
+
+            <TextView
+                android:id="@+id/text_overlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="GC"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guido Cotelesso"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Ingresá tu clave"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#D0D0D0" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#D0D0D0" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#D0D0D0" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#D0D0D0" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#D0D0D0" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#D0D0D0" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/baseline_remove_red_eye_24" />
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape"
+                    android:backgroundTint="#D0D0D0"
+                    android:text="Olvidé mi clave" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape"
+                    android:backgroundTint="#D0D0D0"
+                    android:text="Cambié mi número" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
