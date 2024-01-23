@@ -7,6 +7,6 @@ data class LoginRequest (
     val email: String,
     @SerializedName("phone_number") val phoneNumber: String,
     val gender: String,
-    val password: String,
+    var password: String,
     @SerializedName("login_type") val loginType: String,
 )

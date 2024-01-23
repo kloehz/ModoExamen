@@ -5,8 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.modoexamen.R
+import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentLoginBinding
 import com.example.modoexamen.login.data.datasource.remote.RemoteLoginDataSource
 import com.example.modoexamen.login.data.provider.RetrofitProvider
@@ -19,11 +23,12 @@ import com.example.modoexamen.login.presentation.viewmodel.LoginViewModel
 import com.example.modoexamen.login.presentation.viewmodel.LoginViewModelFactory
 import com.example.modoexamen.login.utils.KEYBOARD_NUMBERS
 import com.example.modoexamen.login.utils.PASSWORD_LENGTH
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnNumberClickListener {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var passwordDotsFragment: PasswordDotsFragment
-    private var password: List<Int> = listOf()
+    private var password: String = ""
 
     private val viewModel by viewModels<LoginViewModel> {
         LoginViewModelFactory(
@@ -45,16 +50,37 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
         kotlin.runCatching {
             itemPressed.toInt()
         }.onSuccess {
-            password+=it
-            if(password.size == PASSWORD_LENGTH){
-                binding.textAndDotsContainer.visibility = View.GONE
-                binding.progressBar.visibility = View.VISIBLE
+            password += it.toString()
+            if(password.length == PASSWORD_LENGTH){
+                doLogin(password)
                 return
             }
             passwordDotsFragment.keyboardPressed(itemPressed)
         }.onFailure {
             if(itemPressed == "DELETE"){
                 password.dropLast(1)
+            }
+        }
+    }
+
+    private fun doLogin(password: String){
+        viewModel.doLogin(password)
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.loginState().collect{result->
+                    when(result) {
+                        is UiState.Loading -> {
+                            binding.textAndDotsContainer.visibility = View.GONE
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is UiState.Success -> {
+
+                        }
+                        is UiState.Error -> {
+
+                        }
+                    }
+                }
             }
         }
     }

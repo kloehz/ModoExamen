@@ -1,9 +1,11 @@
 package com.example.modoexamen.login.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.example.modoexamen.application.FAKE_LOGIN_DATA
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.login.data.model.LoginRequest
 import com.example.modoexamen.login.data.model.LoginResponse
@@ -16,19 +18,23 @@ import java.lang.Exception
 
 class LoginViewModel(private val repo: LoginRepository): ViewModel() {
 
-    private val loginState = MutableStateFlow<UiState<LoginResponse>>(UiState.Loading())
+    private val loginStateFlow = MutableStateFlow<UiState<LoginResponse>>(UiState.Loading())
 
-    fun doLogin(data: LoginRequest) = viewModelScope.launch {
+    fun doLogin(password: String) = viewModelScope.launch {
+        var fakeData = FAKE_LOGIN_DATA.copy()
+        fakeData.password = password
         kotlin.runCatching {
-            repo.doLogin(data)
+            repo.doLogin(fakeData)
         }.onSuccess { response ->
-            loginState.value = UiState.Success(response)
+            loginStateFlow.value = UiState.Success(response)
+            Log.d("Guido: ", response.toString())
         }.onFailure {loginError ->
-            loginState.value = UiState.Error(Exception(loginError))
+            Log.d("Guido: ", loginError.toString())
+            loginStateFlow.value = UiState.Error(Exception(loginError))
         }
     }
 
-    fun loginResponse(): StateFlow<UiState<LoginResponse>> = loginState
+    fun loginState(): StateFlow<UiState<LoginResponse>> = loginStateFlow
 }
 
 class LoginViewModelFactory(private val repo: LoginRepository): ViewModelProvider.Factory {
