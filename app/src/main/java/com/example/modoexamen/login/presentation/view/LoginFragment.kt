@@ -77,7 +77,9 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
 
                         }
                         is UiState.Error -> {
-
+                            binding.textAndDotsContainer.visibility = View.VISIBLE
+                            binding.progressBar.visibility = View.GONE
+                            passwordDotsFragment.resetInputPassword()
                         }
                     }
                 }

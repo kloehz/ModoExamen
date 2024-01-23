@@ -62,6 +62,12 @@ class PasswordDotsFragment : Fragment(R.layout.fragment_password_dots) {
         )
     }
 
+    fun resetInputPassword(){
+        for(idx in currentIndex downTo 0){
+            dotsArray[idx].background.setTintList(ColorStateList.valueOf(colorStateListInActive))
+        }
+    }
+
     fun keyboardPressed(value: String){
         kotlin.runCatching {
             value.toInt()
