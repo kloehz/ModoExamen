@@ -18,10 +18,12 @@ import com.example.modoexamen.login.presentation.view.adapter.KeyboardGridAdapte
 import com.example.modoexamen.login.presentation.viewmodel.LoginViewModel
 import com.example.modoexamen.login.presentation.viewmodel.LoginViewModelFactory
 import com.example.modoexamen.login.utils.KEYBOARD_NUMBERS
+import com.example.modoexamen.login.utils.PASSWORD_LENGTH
 
 class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnNumberClickListener {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var passwordDotsFragment: PasswordDotsFragment
+    private var password: List<Int> = listOf()
 
     private val viewModel by viewModels<LoginViewModel> {
         LoginViewModelFactory(
@@ -34,15 +36,27 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
         binding = FragmentLoginBinding.bind(view)
         passwordDotsFragment = PasswordDotsFragment()
         childFragmentManager.beginTransaction()
-            .replace(R.id.passwordDotsContainer, passwordDotsFragment)
+            .replace(R.id.password_dots_container, passwordDotsFragment)
             .commitNow()
-
         setInitialComponentProperties()
     }
 
-    override fun onNumberClick(number: String) {
-        Log.d("Guido: ", "Clicked number: $number")
-        passwordDotsFragment.keyboardPressed(number)
+    override fun onNumberClick(itemPressed: String) {
+        kotlin.runCatching {
+            itemPressed.toInt()
+        }.onSuccess {
+            password+=it
+            if(password.size == PASSWORD_LENGTH){
+                binding.textAndDotsContainer.visibility = View.GONE
+                binding.progressBar.visibility = View.VISIBLE
+                return
+            }
+            passwordDotsFragment.keyboardPressed(itemPressed)
+        }.onFailure {
+            if(itemPressed == "DELETE"){
+                password.dropLast(1)
+            }
+        }
     }
 
     private fun setInitialComponentProperties(){

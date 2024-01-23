@@ -2,13 +2,13 @@ package com.example.modoexamen.login.presentation.components
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.graphics.Color
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import com.example.modoexamen.R
 import com.example.modoexamen.databinding.FragmentPasswordDotsBinding
 import com.example.modoexamen.login.utils.PASSWORD_LENGTH
@@ -25,11 +25,13 @@ class PasswordDotsFragment : Fragment(R.layout.fragment_password_dots) {
     private lateinit var dotsArray: Array<ImageView>
     private lateinit var numberArray: Array<TextView>
     private lateinit var numberContainerArray: Array<FrameLayout>
-    private val colorStateListActive = Color.parseColor("#FFFFFF")
-    private val colorStateListInActive = Color.parseColor("#D0D0D0")
+    private var colorStateListActive: Int = 0
+    private var colorStateListInActive: Int = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPasswordDotsBinding.bind(view)
+        colorStateListActive = ContextCompat.getColor(requireContext(), R.color.payGradientEnd)
+        colorStateListInActive = ContextCompat.getColor(requireContext(), R.color.secondaryGray08)
         initializeIds()
     }
 
@@ -79,7 +81,6 @@ class PasswordDotsFragment : Fragment(R.layout.fragment_password_dots) {
             }
             if(currentIndex < PASSWORD_LENGTH) currentIndex++
         }.onFailure {
-            Log.d("Guido: ", "No entro: $value - $currentIndex")
             if(currentIndex > 0) currentIndex--;
             if(value == "DELETE") dotsArray[currentIndex].background.setTintList(ColorStateList.valueOf(colorStateListInActive))
         }
