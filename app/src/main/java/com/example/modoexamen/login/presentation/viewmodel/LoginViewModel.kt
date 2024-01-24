@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.example.modoexamen.application.Constants
 import com.example.modoexamen.application.FAKE_LOGIN_DATA
+import com.example.modoexamen.configuration.NetworkConfiguration
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.login.data.model.LoginRequest
 import com.example.modoexamen.login.data.model.LoginResponse
@@ -26,6 +28,9 @@ class LoginViewModel(private val repo: LoginRepository): ViewModel() {
         kotlin.runCatching {
             repo.doLogin(fakeData)
         }.onSuccess { response ->
+            NetworkConfiguration.updateHeaders(mapOf(
+                Constants.AUTHORIZATION_HEADER_NAME to response.accessToken
+            ))
             loginStateFlow.value = UiState.Success(response)
         }.onFailure {loginError ->
             loginStateFlow.value = UiState.Error(Exception(loginError))
