@@ -71,7 +71,6 @@ class PasswordDotsFragment : Fragment(R.layout.fragment_password_dots) {
     }
 
     fun keyboardPressed(value: String){
-        Log.d("Guido: ", value)
         kotlin.runCatching {
             value.toInt()
         }.onSuccess {
@@ -90,7 +89,6 @@ class PasswordDotsFragment : Fragment(R.layout.fragment_password_dots) {
             }
             if(currentIndex < PASSWORD_LENGTH) currentIndex++
         }.onFailure {
-            Log.d("Guido: ", "$currentIndex - $value")
             if(currentIndex > 0) currentIndex--;
             if(value == "DELETE") dotsArray[currentIndex].background.setTintList(ColorStateList.valueOf(colorStateListInActive))
         }

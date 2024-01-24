@@ -64,12 +64,10 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
     }
 
     private fun doLogin(loginPassword: String){
-        Log.d("Guido: ", "entro aca de nuevo xd")
         viewModel.doLogin(loginPassword)
         viewLifecycleOwner.lifecycleScope.launch{
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loginState().collect{result->
-                    Log.d("Guido: ", result.toString())
                     when(result) {
                         is UiState.Loading -> {
                             binding.textAndDotsContainer.visibility = View.GONE

@@ -27,9 +27,7 @@ class LoginViewModel(private val repo: LoginRepository): ViewModel() {
             repo.doLogin(fakeData)
         }.onSuccess { response ->
             loginStateFlow.value = UiState.Success(response)
-            Log.d("Guido: ", response.toString())
         }.onFailure {loginError ->
-            Log.d("Guido: ", loginError.toString())
             loginStateFlow.value = UiState.Error(Exception(loginError))
         }
     }
