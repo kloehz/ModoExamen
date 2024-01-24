@@ -8,6 +8,13 @@
     android:background="@drawable/shape"
     android:backgroundTint="@color/secondaryGray08"
     tools:context=".login.presentation.components.KeyboardButtonFragment">
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:paddingVertical="4sp"
+        android:visibility="gone"
+        android:background="@drawable/baseline_backspace_24" />
     <TextView
         android:id="@+id/top_text"
         android:layout_width="wrap_content"

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.graphics.Color
+import android.util.Log
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import com.example.modoexamen.R
@@ -66,9 +67,11 @@ class PasswordDotsFragment : Fragment(R.layout.fragment_password_dots) {
         for(idx in currentIndex downTo 0){
             dotsArray[idx].background.setTintList(ColorStateList.valueOf(colorStateListInActive))
         }
+        currentIndex = 0
     }
 
     fun keyboardPressed(value: String){
+        Log.d("Guido: ", value)
         kotlin.runCatching {
             value.toInt()
         }.onSuccess {
@@ -87,6 +90,7 @@ class PasswordDotsFragment : Fragment(R.layout.fragment_password_dots) {
             }
             if(currentIndex < PASSWORD_LENGTH) currentIndex++
         }.onFailure {
+            Log.d("Guido: ", "$currentIndex - $value")
             if(currentIndex > 0) currentIndex--;
             if(value == "DELETE") dotsArray[currentIndex].background.setTintList(ColorStateList.valueOf(colorStateListInActive))
         }

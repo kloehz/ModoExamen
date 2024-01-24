@@ -55,19 +55,21 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
                 doLogin(password)
                 return
             }
-            passwordDotsFragment.keyboardPressed(itemPressed)
         }.onFailure {
             if(itemPressed == "DELETE"){
-                password.dropLast(1)
+                password = password.dropLast(1)
             }
         }
+        passwordDotsFragment.keyboardPressed(itemPressed)
     }
 
-    private fun doLogin(password: String){
-        viewModel.doLogin(password)
+    private fun doLogin(loginPassword: String){
+        Log.d("Guido: ", "entro aca de nuevo xd")
+        viewModel.doLogin(loginPassword)
         viewLifecycleOwner.lifecycleScope.launch{
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loginState().collect{result->
+                    Log.d("Guido: ", result.toString())
                     when(result) {
                         is UiState.Loading -> {
                             binding.textAndDotsContainer.visibility = View.GONE
@@ -79,6 +81,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
                         is UiState.Error -> {
                             binding.textAndDotsContainer.visibility = View.VISIBLE
                             binding.progressBar.visibility = View.GONE
+                            password = ""
                             passwordDotsFragment.resetInputPassword()
                         }
                     }

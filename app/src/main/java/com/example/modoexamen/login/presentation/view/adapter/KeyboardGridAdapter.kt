@@ -1,9 +1,11 @@
 package com.example.modoexamen.login.presentation.view.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.modoexamen.R
 import com.example.modoexamen.databinding.FragmentKeyboardButtonBinding
 
 class KeyboardGridAdapter(
@@ -38,10 +40,17 @@ class KeyboardGridAdapter(
 
      inner class ViewHolder(private val binding: FragmentKeyboardButtonBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Pair<String, String>){
-            var topText = if (item.first != "BIOMETRIC" && item.first != "DELETE") item.first else ""
-            if(item.first != "BIOMETRIC" || item.first != "DELETE") binding.topText.text = topText
-            binding.bottomText.text = item.second
-            //if(item.second.isBlank()) binding.bottomText.visibility = View.GONE
+            if(item.first == "DELETE"){
+                binding.imageView.setImageResource(R.drawable.baseline_backspace_24)
+                binding.imageView.visibility = View.VISIBLE
+                binding.topText.visibility = View.GONE
+                binding.bottomText.visibility = View.GONE
+            } else {
+                var topText = if (item.first != "BIOMETRIC" && item.first != "DELETE") item.first else ""
+                if(item.first != "BIOMETRIC" || item.first != "DELETE") binding.topText.text = topText
+                binding.bottomText.text = item.second
+                //if(item.second.isBlank()) binding.bottomText.visibility = View.GONE
+            }
         }
     }
 }

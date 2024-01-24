@@ -12,5 +12,5 @@ val FAKE_LOGIN_DATA = LoginRequest(
     "+5492477566666",
     "M",
     "",
-    ""
+    "Password"
 )
