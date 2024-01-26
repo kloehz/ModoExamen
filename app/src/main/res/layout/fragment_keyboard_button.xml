@@ -7,7 +7,7 @@
     android:gravity="center"
     android:background="@drawable/shape"
     android:backgroundTint="@color/secondaryGray08"
-    tools:context=".login.presentation.components.KeyboardButtonFragment">
+    tools:context=".features.login.presentation.components.KeyboardButtonFragment">
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="24dp"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="2"
         android:textSize="20sp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/primaryBlack"/>
 
     <TextView
         android:id="@+id/bottom_text"
@@ -29,6 +29,6 @@
         android:layout_height="match_parent"
         android:text="ABC"
         android:textSize="16sp"
-        android:textColor="@color/black" />
+        android:textColor="@color/primaryBlack" />
 
 </LinearLayout>
