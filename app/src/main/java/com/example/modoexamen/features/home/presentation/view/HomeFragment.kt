@@ -22,6 +22,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var viewPager: ViewPager2
+    private var accountsLength: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,7 +30,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val appContainer = (requireActivity() as MainActivity).appContainer
         viewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
         viewModel.getMe()
-        setupViewPager()
         setupObservers()
     }
 
@@ -42,6 +42,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         is UiState.Loading -> {
                             Log.d("Home: ", "Loading")}
                         is UiState.Success -> {
+                            accountsLength = state.data.accounts.size
+                            setupAccountsViewPager()
                             Log.d("Home: ", "Success")
                         }
                         is UiState.Error -> {}
@@ -51,8 +53,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun setupViewPager(){
-        viewPager = binding.pager
+    private fun setupAccountsViewPager(){
+        viewPager = binding.accountsPager
         val pageTranslationX = 250
         val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
             page.translationX = -pageTranslationX * position
@@ -64,7 +66,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private inner class ScreenSlidePagerAdapter(fa: Fragment) : FragmentStateAdapter(fa) {
-        override fun getItemCount(): Int = 20
+        override fun getItemCount(): Int = accountsLength
         override fun createFragment(position: Int): Fragment {
             val fragment = AccountFragment()
             val bundle = Bundle()
