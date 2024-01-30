@@ -36,7 +36,7 @@ class KeyboardGridAdapter(
     }
 
     interface OnNumberClickListener {
-        fun onNumberClick(number: String)
+        fun onNumberClick(itemPressed: String)
     }
 
      inner class ViewHolder(private val binding: FragmentKeyboardButtonBinding): RecyclerView.ViewHolder(binding.root) {

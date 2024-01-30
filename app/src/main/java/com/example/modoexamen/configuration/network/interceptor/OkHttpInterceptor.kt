@@ -1,6 +1,5 @@
-package com.example.modoexamen.configuration.network.provider
+package com.example.modoexamen.configuration.network.interceptor
 
-import com.example.modoexamen.configuration.network.interceptor.HeaderInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit

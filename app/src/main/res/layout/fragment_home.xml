@@ -30,7 +30,34 @@
             android:backgroundTint="@color/secondaryGray03"
             android:src="@drawable/baseline_notifications_none_24" />
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="3dp"
+            android:text="@string/your_accounts" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@drawable/shape"
+            android:backgroundTint="@color/secondaryGray08"
+            android:src="@drawable/money_rounded" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="20dp"
+            android:paddingHorizontal="18dp"
+            android:background="@drawable/shape"
+            android:layout_marginLeft="12dp"
+            android:backgroundTint="@color/secondaryGray08"
+            android:src="@drawable/open_eye" />
+    </LinearLayout>
     <androidx.viewpager2.widget.ViewPager2
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/accountsPager"
@@ -61,7 +88,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enviar"
+                android:text="@string/send"
                 android:textSize="20dp"
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/primaryWhite"
@@ -87,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Pagar"
+                android:text="@string/pay"
                 android:textSize="20dp"
                 android:textColor="@color/primaryWhite"
                 />
@@ -114,7 +141,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enviar"
+                android:text="@string/request"
                 android:textSize="12dp"
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/primaryBlack"
@@ -137,7 +164,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gaming"
+                android:text="@string/gaming"
                 android:textSize="12dp"
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/primaryBlack"
@@ -159,7 +186,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Recargas"
+                android:text="@string/recharge"
                 android:textSize="12dp"
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/primaryBlack"
@@ -170,14 +197,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TUS PROMOCIONES"/>
+        android:text="@string/your_promotions"/>
 
-    <androidx.viewpager2.widget.ViewPager2
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/promotionsPager"
-        android:layout_marginVertical="8dp"
+    <fragment
+        android:id="@+id/avatar_fragment"
+        android:name="com.example.modoexamen.features.home.presentation.components.PromotionsPagerFragment"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
     <LinearLayout
         android:id="@+id/promotions_recycler_view"
         android:layout_width="match_parent"
@@ -191,5 +218,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TU ACTIVIDAD"/>
+        android:text="@string/your_activity"/>
 </LinearLayout>

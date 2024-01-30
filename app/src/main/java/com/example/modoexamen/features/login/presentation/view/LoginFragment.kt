@@ -10,10 +10,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.modoexamen.R
+import com.example.modoexamen.application.Constants
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentLoginBinding
 import com.example.modoexamen.features.login.data.datasource.remote.RemoteLoginDataSource
-import com.example.modoexamen.configuration.network.provider.RetrofitProvider
+import com.example.modoexamen.features.home.data.provider.HomeRetrofitProvider
 import com.example.modoexamen.features.login.data.service.LoginApiService
 import com.example.modoexamen.features.login.domain.usecase.LoginRepositoryImplement
 import com.example.modoexamen.features.login.presentation.components.PasswordDotsFragment
@@ -35,7 +36,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
     private val viewModel by viewModels<LoginViewModel> {
         LoginViewModelFactory(
             LoginRepositoryImplement(RemoteLoginDataSource(
-                RetrofitProvider.instance.create(
+                HomeRetrofitProvider.instance.create(
                 LoginApiService::class.java)))
         )
     }

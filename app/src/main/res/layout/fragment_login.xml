@@ -121,6 +121,7 @@
                 android:id="@+id/grid_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toBottomOf="@+id/login_container" />
         </LinearLayout>
 
