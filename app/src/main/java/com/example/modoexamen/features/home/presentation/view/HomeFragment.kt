@@ -44,9 +44,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         is UiState.Success -> {
                             accountsLength = state.data.accounts.size
                             setupAccountsViewPager()
-                            Log.d("Home: ", "Success")
                         }
-                        is UiState.Error -> {}
+                        is UiState.Error -> {
+
+                        }
                     }
                 }
             }

@@ -14,7 +14,7 @@ enum class AccountTypes(val code: String) {
 }
 
 data class Me(
-    val accounts: List<Account>,
+    var accounts: MutableList<Account>,
     val cards: List<Card>,
     @SerializedName("created_at") val createdAt: String,
     val dni: String,
@@ -24,7 +24,7 @@ data class Me(
     val gender: String,
     val id: String,
     @SerializedName("identity_validation") val identityValidation: Boolean,
-    val image: String,
+    val image: String?,
     @SerializedName("last_name") val lastName: String,
     @SerializedName("license_plates") val licensePlates: List<Any>,
     @SerializedName("member_get_members_amount") val memberGetMembersAmount: String,
@@ -43,6 +43,8 @@ data class Account(
     @SerializedName("currency_code") val currencyCode: String,
     val favourite: Boolean,
     val id: String,
+    var balance: Float?,
+    var isLoadingBalance: Boolean = true,
     @SerializedName("last_digits") val lastDigits: String,
     val schema: String,
     val type: AccountTypes

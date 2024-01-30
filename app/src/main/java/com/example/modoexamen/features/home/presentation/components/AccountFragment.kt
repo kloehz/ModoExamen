@@ -27,7 +27,6 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAccountBinding.bind(view)
-
         val appContainer = (requireActivity() as MainActivity).appContainer
         homeViewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
 
@@ -49,7 +48,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
                             Log.d("Account: ", "Loading")
                         }
                         is UiState.Success -> {
-                            Log.d("Account: ", "Success")
+                            Log.d("Guido: ", "Success: ${state.data.accounts[index].isLoadingBalance} - ${state.data.accounts[index].balance}")
                             setupComponent(state.data.accounts[index])
                         }
 
