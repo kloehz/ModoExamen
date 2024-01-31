@@ -42,6 +42,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         is UiState.Loading -> {
                             Log.d("Home: ", "Loading")}
                         is UiState.Success -> {
+                            Log.d("Home: ", "Loaded")
                             accountsLength = state.data.accounts.size
                             setupAccountsViewPager()
                         }
@@ -60,7 +61,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
             page.translationX = -pageTranslationX * position
         }
-        viewPager.offscreenPageLimit = 2
+        viewPager.offscreenPageLimit = 1
         viewPager.setPageTransformer(pageTransformer)
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter

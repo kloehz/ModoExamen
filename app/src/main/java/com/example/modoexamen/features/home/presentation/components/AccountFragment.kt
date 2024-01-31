@@ -15,10 +15,11 @@ import com.example.modoexamen.R
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentAccountBinding
 import com.example.modoexamen.features.home.data.model.Account
-import com.example.modoexamen.features.home.data.model.AccountTypes
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
 import com.example.modoexamen.features.home.utils.getAccountType
+import com.example.modoexamen.utils.formatMoney
 import kotlinx.coroutines.launch
+
 class AccountFragment : Fragment(R.layout.fragment_account) {
     private lateinit var binding: FragmentAccountBinding
     private lateinit var homeViewModel: HomeViewModel
@@ -33,7 +34,6 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         arguments?.let{argumentIndex ->
             index = argumentIndex.getInt("index")
         }
-
         setupObservers()
     }
 
@@ -43,12 +43,12 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
                 homeViewModel.homeState().collect() { state ->
                     when (state) {
                         is UiState.Initial -> {
-                            Log.d("Account: ", "Initial")}
+
+                        }
                         is UiState.Loading -> {
-                            Log.d("Account: ", "Loading")
+
                         }
                         is UiState.Success -> {
-                            Log.d("Guido: ", "Success: ${state.data.accounts[index].isLoadingBalance} - ${state.data.accounts[index].balance}")
                             setupComponent(state.data.accounts[index])
                         }
 
@@ -64,8 +64,14 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
             .load(account.bank.imageUrl)
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .into(binding.bankImage)
-        binding.accountTypeNumber.text = account.lastDigits
         val accountType = getAccountType(account.type)
-        binding.accountType.text = "$accountType ・ "
+        if(account.balance != null){
+            val (amount, cents) = formatMoney(account.balance!!)
+            binding.amount.text = amount
+            binding.centAmount.text = cents
+            binding.accountType.text = accountType
+            binding.accountTypeNumber.text = " ・ ${account.lastDigits}"
+            binding.balanceSkeleton.unVeil()
+        }
     }
 }

@@ -15,12 +15,10 @@ class HomeRepositoryImplement(private val dataSource: HomeDataSource): HomeRepos
 
     override suspend fun getAccountsAmount(bankId: String): Me {
         val bankAmount = dataSource.getAccountsAmount(bankId)
-        Log.d("Guidooo: ", meData.accounts[0].isLoadingBalance.toString())
         val accountsById = meData.accounts.associateBy { it.id }
         bankAmount.forEach { bankAccount ->
             accountsById[bankAccount.id]?.apply {
                 balance = bankAccount.balance
-                isLoadingBalance = false
             }
         }
         return meData
