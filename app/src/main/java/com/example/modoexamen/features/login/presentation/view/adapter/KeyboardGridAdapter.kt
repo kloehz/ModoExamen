@@ -20,7 +20,7 @@ class KeyboardGridAdapter(
         itemBinding.root.setOnClickListener {
             // Here we take the touch position if it is != -1
             val position =
-                holder.adapterPosition.takeIf { it != DiffUtil.DiffResult.NO_POSITION }
+                holder.bindingAdapterPosition.takeIf { it != DiffUtil.DiffResult.NO_POSITION }
                     ?: return@setOnClickListener
             numberClickListener.onNumberClick(numbersList[position].first)
         }
@@ -30,9 +30,7 @@ class KeyboardGridAdapter(
     override fun getItemCount(): Int = numbersList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        when(holder){
-            is ViewHolder -> holder.bind(numbersList[position])
-        }
+        holder.bind(numbersList[position])
     }
 
     interface OnNumberClickListener {
@@ -42,15 +40,24 @@ class KeyboardGridAdapter(
      inner class ViewHolder(private val binding: FragmentKeyboardButtonBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Pair<String, String>){
             if(item.first == "DELETE"){
-                binding.imageView.setImageResource(R.drawable.baseline_backspace_24)
+                binding.imageView.setImageResource(R.drawable.delete_arrow)
+                binding.imageView.visibility = View.VISIBLE
+                binding.topText.visibility = View.GONE
+                binding.bottomText.visibility = View.GONE
+            } else if(item.first == "BIOMETRIC"){
+                binding.imageView.setImageResource(R.drawable.biometry)
+                val imageParams = binding.imageView.layoutParams as ViewGroup.LayoutParams
+                imageParams.width = 110
+                imageParams.height = 110
+                binding.imageView.layoutParams = imageParams
                 binding.imageView.visibility = View.VISIBLE
                 binding.topText.visibility = View.GONE
                 binding.bottomText.visibility = View.GONE
             } else {
-                var topText = if (item.first != "BIOMETRIC" && item.first != "DELETE") item.first else ""
-                if(item.first != "BIOMETRIC" || item.first != "DELETE") binding.topText.text = topText
+                val topText = item.first
+                binding.topText.text = topText
                 binding.bottomText.text = item.second
-                //if(item.second.isBlank()) binding.bottomText.visibility = View.GONE
+                if(item.second.isBlank() && item.first == "0") binding.bottomText.visibility = View.GONE
             }
         }
     }

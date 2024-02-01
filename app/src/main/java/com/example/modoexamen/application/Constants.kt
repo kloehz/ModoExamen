@@ -10,6 +10,15 @@ object Constants {
     const val AUTHORIZATION_HEADER_NAME = "Authorization"
 }
 
+//val FAKE_LOGIN_DATA = LoginRequest(
+//    "37930877",
+//    "kloehzmu@gmail.com",
+//    "+5492477566666",
+//    "M",
+//    "",
+//    "Password"
+//)
+
 val FAKE_LOGIN_DATA = LoginRequest(
     "39549621",
     "kloehzmu@gmail.com",

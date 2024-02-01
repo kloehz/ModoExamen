@@ -10,7 +10,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.modoexamen.R
-import com.example.modoexamen.application.Constants
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentLoginBinding
 import com.example.modoexamen.features.login.data.datasource.remote.RemoteLoginDataSource
@@ -24,6 +23,8 @@ import com.example.modoexamen.features.login.presentation.viewmodel.LoginViewMod
 import com.example.modoexamen.features.login.presentation.viewmodel.LoginViewModelFactory
 import com.example.modoexamen.features.login.utils.KEYBOARD_NUMBERS
 import com.example.modoexamen.features.login.utils.PASSWORD_LENGTH
+import com.example.modoexamen.features.login.utils.getLoginErrorMessage
+import com.example.modoexamen.shared.model.ErrorCodes
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnNumberClickListener {
@@ -86,8 +87,11 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
                             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                         }
                         is UiState.Error -> {
-                            availableRetries--
-                            binding.errorText.text = getString(R.string.password_input_error, availableRetries.toString())
+                            if(result.error == ErrorCodes.authentication_fail) availableRetries--
+                            if(result.error != null){
+                                val errorMessage = getLoginErrorMessage(result.error)
+                                binding.errorText.text = getString(errorMessage, availableRetries.toString())
+                            }
                             binding.errorText.visibility = View.VISIBLE
                             binding.textAndDotsContainer.visibility = View.VISIBLE
                             binding.progressBar.visibility = View.GONE

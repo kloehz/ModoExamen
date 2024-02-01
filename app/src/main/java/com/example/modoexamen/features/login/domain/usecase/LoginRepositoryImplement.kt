@@ -4,11 +4,13 @@ import com.example.modoexamen.features.login.data.datasource.remote.LoginDataSou
 import com.example.modoexamen.features.login.data.model.LoginRequest
 import com.example.modoexamen.features.login.data.model.LoginResponse
 import com.example.modoexamen.features.login.domain.repository.LoginRepository
+import com.example.modoexamen.shared.model.ResponseResult
 
-class LoginRepositoryImplement(
+internal class LoginRepositoryImplement(
     private val dataSource: LoginDataSource
 ) : LoginRepository {
-    override suspend fun doLogin(request: LoginRequest): LoginResponse {
+    override suspend fun invoke(request: LoginRequest): ResponseResult<LoginResponse> {
         return dataSource.doLogin(request)
+
     }
 }

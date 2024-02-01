@@ -40,8 +40,8 @@
             </LinearLayout>
             <com.skydoves.androidveil.VeilLayout
                 android:id="@+id/balance_skeleton"
-                android:layout_width="200dp"
-                android:layout_height="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:veilLayout_veiled="true"
                 app:veilLayout_shimmerEnable="true">
                 <LinearLayout
@@ -49,17 +49,19 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/amount_sign"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$ "
                         android:textStyle="bold"
+                        android:visibility="gone"
                         android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00000000,"
+                        android:text="0000000000000"
                         android:textStyle="bold"
                         android:textSize="18sp" />
 
@@ -68,6 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="00"
+                        android:visibility="gone"
                         android:textStyle="bold"
                         android:textSize="12sp"  />
                 </LinearLayout>
@@ -76,8 +79,8 @@
 
             <com.skydoves.androidveil.VeilLayout
                 android:id="@+id/account_type_skeleton"
-                android:layout_width="200dp"
-                android:layout_height="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:veilLayout_veiled="true"
                 app:veilLayout_shimmerEnable="true">
                 <LinearLayout
@@ -91,13 +94,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
+                        android:visibility="gone"
                         android:text="XX ・"  />
                     <TextView
                         android:id="@+id/account_type_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:text="0000"  />
+                        android:text="00000000"  />
                 </LinearLayout>
             </com.skydoves.androidveil.VeilLayout>
     </LinearLayout>

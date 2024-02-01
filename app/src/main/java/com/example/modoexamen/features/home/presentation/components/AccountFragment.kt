@@ -38,6 +38,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     }
 
     private fun setupObservers() {
+        // Account observer
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.homeState().collect() { state ->
@@ -49,29 +50,67 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
 
                         }
                         is UiState.Success -> {
-                            setupComponent(state.data.accounts[index])
+                            setupAccountComponent(state.data!!.accounts[index])
                         }
 
-                        is UiState.Error -> {}
+                        is UiState.Error -> {
+                        }
+                    }
+                }
+            }
+        }
+
+        // Amount observer
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.amountsState().collect() { state ->
+                    when (state) {
+                        is UiState.Initial -> {
+
+                        }
+                        is UiState.Loading -> {
+
+                        }
+                        is UiState.Success -> {
+                            setupAmounts(state.data.accounts[index])
+                        }
+
+                        is UiState.Error -> {
+                            setupAmountError()
+                        }
                     }
                 }
             }
         }
     }
 
-    private fun setupComponent(account: Account){
+    private fun setupAmountError(){
+        if(binding.amountSign.visibility == View.GONE){
+            binding.amount.text = "No disponible"
+            binding.balanceSkeleton.unVeil()
+        }
+    }
+
+    private fun setupAmounts(account: Account){
+        if(account.balance != null) {
+            val (amount, cents) = formatMoney(account.balance!!)
+            binding.amount.text = amount
+            binding.centAmount.text = cents
+            binding.balanceSkeleton.unVeil()
+            binding.amountSign.visibility = View.VISIBLE
+            binding.centAmount.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setupAccountComponent(account: Account){
         Glide.with(requireContext())
             .load(account.bank.imageUrl)
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .into(binding.bankImage)
         val accountType = getAccountType(account.type)
-        if(account.balance != null){
-            val (amount, cents) = formatMoney(account.balance!!)
-            binding.amount.text = amount
-            binding.centAmount.text = cents
-            binding.accountType.text = accountType
-            binding.accountTypeNumber.text = " ・ ${account.lastDigits}"
-            binding.balanceSkeleton.unVeil()
-        }
+        binding.accountType.text = accountType
+        binding.accountTypeNumber.text = " ・ ${account.lastDigits}"
+        binding.accountTypeSkeleton.unVeil()
+        binding.accountType.visibility = View.VISIBLE
     }
 }

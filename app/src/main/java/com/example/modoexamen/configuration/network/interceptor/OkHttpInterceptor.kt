@@ -25,5 +25,4 @@ internal class OkHttpProvider {
         .addInterceptor(httpLoggingInterceptor)
         .addNetworkInterceptor(headersInterceptor)
         .build()
-
 }

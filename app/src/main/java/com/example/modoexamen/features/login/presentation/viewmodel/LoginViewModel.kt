@@ -1,5 +1,6 @@
 package com.example.modoexamen.features.login.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -13,30 +14,29 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val repo: LoginRepository): ViewModel() {
+internal class LoginViewModel(private val repo: LoginRepository): ViewModel() {
 
     private val loginStateFlow = MutableStateFlow<UiState<LoginResponse>>(UiState.Initial())
 
     fun doLogin(password: String) = viewModelScope.launch {
+        loginStateFlow.value = UiState.Loading()
         var fakeData = FAKE_LOGIN_DATA.copy()
         fakeData.password = password
-        kotlin.runCatching {
-            loginStateFlow.value = UiState.Loading()
-            repo.doLogin(fakeData)
-        }.onSuccess { response ->
+        val result = repo.invoke(fakeData)
+        if(result.isSuccessful){
             NetworkConfiguration.updateHeaders(mapOf(
-                Constants.AUTHORIZATION_HEADER_NAME to response.accessToken
+                Constants.AUTHORIZATION_HEADER_NAME to result.response!!.accessToken
             ))
-            loginStateFlow.value = UiState.Success(response)
-        }.onFailure {loginError ->
-            loginStateFlow.value = UiState.Error(Exception(loginError))
+            loginStateFlow.value = UiState.Success(result.response!!)
+        } else {
+            loginStateFlow.value = UiState.Error(result.internalError)
         }
     }
 
     fun loginState(): StateFlow<UiState<LoginResponse>> = loginStateFlow
 }
 
-class LoginViewModelFactory(private val repo: LoginRepository): ViewModelProvider.Factory {
+internal class LoginViewModelFactory(private val repo: LoginRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return modelClass.getConstructor(LoginRepository::class.java).newInstance(repo)
     }

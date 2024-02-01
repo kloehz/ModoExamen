@@ -20,8 +20,8 @@ class PromotionsViewModel(private val repo: PromotionsRepository): ViewModel() {
             repo.getPromotions()
         }.onSuccess { response ->
             promotionsStateFlow.value = UiState.Success(response)
-        }.onFailure {error ->
-            promotionsStateFlow.value = UiState.Error(Exception(error))
+        }.onFailure {
+            promotionsStateFlow.value = UiState.Error()
         }
     }
 

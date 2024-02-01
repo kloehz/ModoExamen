@@ -1,8 +1,6 @@
 package com.example.modoexamen.features.home.domain.usecase
 
-import android.util.Log
 import com.example.modoexamen.features.home.data.datasource.remote.HomeDataSource
-import com.example.modoexamen.features.home.data.model.BankAccount
 import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.domain.repository.HomeRepository
 

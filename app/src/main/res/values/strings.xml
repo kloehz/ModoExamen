@@ -5,6 +5,7 @@
     <string name="number_phone_changed">Cambié mi número</string>
     <string name="delete_phone">Borrar teléfono</string>
     <string name="password_input_error">Clave incorrecta. Te quedan %s intentos.</string>
+    <string name="general_login_error">Hubo un error al ingresar, por favor intente nuevamente</string>
     <string name="pay">Pagar</string>
     <string name="send">Enviar</string>
     <string name="request">Pedir</string>
