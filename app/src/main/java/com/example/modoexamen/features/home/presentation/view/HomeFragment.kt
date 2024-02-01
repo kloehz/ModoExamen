@@ -29,7 +29,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding = FragmentHomeBinding.bind(view)
         val appContainer = (requireActivity() as MainActivity).appContainer
         viewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
-        viewModel.getMe()
         setupObservers()
     }
 
@@ -39,10 +38,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 viewModel.homeState().collect{state ->
                     when(state) {
                         is UiState.Initial -> {}
-                        is UiState.Loading -> {
-                            Log.d("Home: ", "Loading")}
+                        is UiState.Loading -> {}
                         is UiState.Success -> {
-                            Log.d("Home: ", "Loaded")
                             accountsLength = state.data.accounts.size
                             setupAccountsViewPager()
                         }

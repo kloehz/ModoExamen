@@ -74,7 +74,6 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
                         is UiState.Success -> {
                             setupAmounts(state.data.accounts[index])
                         }
-
                         is UiState.Error -> {
                             setupAmountError()
                         }

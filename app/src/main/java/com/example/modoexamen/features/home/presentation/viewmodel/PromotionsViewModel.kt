@@ -12,15 +12,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class PromotionsViewModel(private val repo: PromotionsRepository): ViewModel() {
+internal class PromotionsViewModel(private val repo: PromotionsRepository): ViewModel() {
     private val promotionsStateFlow = MutableStateFlow<UiState<Promotions>>(UiState.Initial())
     fun getPromotions() = viewModelScope.launch {
-        kotlin.runCatching {
-            promotionsStateFlow.value = UiState.Loading()
-            repo.getPromotions()
-        }.onSuccess { response ->
-            promotionsStateFlow.value = UiState.Success(response)
-        }.onFailure {
+        promotionsStateFlow.value = UiState.Loading()
+        var result = repo.invoke()
+        if(result.isSuccessful){
+            promotionsStateFlow.value = UiState.Success(result.response!!)
+        } else {
             promotionsStateFlow.value = UiState.Error()
         }
     }
@@ -28,7 +27,7 @@ class PromotionsViewModel(private val repo: PromotionsRepository): ViewModel() {
     fun promotionsState(): StateFlow<UiState<Promotions>> = promotionsStateFlow
 }
 
-class PromotionsViewModelFactory(private val repo: PromotionsRepository): ViewModelProvider.Factory {
+internal class PromotionsViewModelFactory(private val repo: PromotionsRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return modelClass.getConstructor(PromotionsRepository::class.java).newInstance(repo)
     }

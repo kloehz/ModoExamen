@@ -5,15 +5,18 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.modoexamen.MainActivity
 import com.example.modoexamen.R
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentLoginBinding
 import com.example.modoexamen.features.login.data.datasource.remote.RemoteLoginDataSource
 import com.example.modoexamen.features.home.data.provider.HomeRetrofitProvider
+import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
 import com.example.modoexamen.features.login.data.service.LoginApiService
 import com.example.modoexamen.features.login.domain.usecase.LoginRepositoryImplement
 import com.example.modoexamen.features.login.presentation.components.PasswordDotsFragment
@@ -25,6 +28,7 @@ import com.example.modoexamen.features.login.utils.KEYBOARD_NUMBERS
 import com.example.modoexamen.features.login.utils.PASSWORD_LENGTH
 import com.example.modoexamen.features.login.utils.getLoginErrorMessage
 import com.example.modoexamen.shared.model.ErrorCodes
+import com.example.modoexamen.utils.DependenciesContainer
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnNumberClickListener {
@@ -33,12 +37,13 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
     private var password: String = ""
     private var availableRetries = 3
     private var isLogging = false
-
+    private lateinit var appContainer: DependenciesContainer
+    private lateinit var homeViewModel: HomeViewModel
     private val viewModel by viewModels<LoginViewModel> {
         LoginViewModelFactory(
             LoginRepositoryImplement(RemoteLoginDataSource(
                 HomeRetrofitProvider.instance.create(
-                LoginApiService::class.java)))
+                    LoginApiService::class.java)))
         )
     }
 
@@ -49,7 +54,10 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
         childFragmentManager.beginTransaction()
             .replace(R.id.password_dots_container, passwordDotsFragment)
             .commitNow()
+        appContainer = (requireActivity() as MainActivity).appContainer
+        homeViewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
         setInitialComponentProperties()
+        setUpMeObserver()
         setUpLoginObserver()
     }
 
@@ -84,7 +92,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
                             binding.progressBar.visibility = View.VISIBLE
                         }
                         is UiState.Success -> {
-                            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                            homeViewModel.getMe()
                         }
                         is UiState.Error -> {
                             if(result.error == ErrorCodes.authentication_fail) availableRetries--
@@ -99,6 +107,23 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
                             passwordDotsFragment.resetInputPassword()
                             isLogging = false
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setUpMeObserver(){
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+                homeViewModel.homeState().collect{result->
+                    when(result) {
+                        is UiState.Initial -> {}
+                        is UiState.Loading -> {}
+                        is UiState.Success -> {
+                            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                        }
+                        is UiState.Error -> {}
                     }
                 }
             }

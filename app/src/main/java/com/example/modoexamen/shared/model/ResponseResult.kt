@@ -1,6 +1,6 @@
 package com.example.modoexamen.shared.model
 
-internal class ResponseResult<T> {
+class ResponseResult<T> {
 
     companion object {
         const val HTTP_UNDEFINED = 0
