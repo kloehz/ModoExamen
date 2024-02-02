@@ -93,11 +93,9 @@ class PromotionsPagerFragment : Fragment(R.layout.fragment_promotions_pager) {
             val imageView = ImageView(requireContext())
             val windowWidth = resources.displayMetrics.widthPixels
             val layoutParams = ViewGroup.MarginLayoutParams(
-                windowWidth - 400, (windowWidth * 0.25).roundToInt()
+                windowWidth - 250, (windowWidth * 0.245).roundToInt()
             )
             imageView.layoutParams = layoutParams
-
-//            imageView.setBackgroundResource(R.drawable.shape)
             Glide.with(requireContext())
                 .load(cardsList[position].content.image.optionalImagesPack.landscapeApp)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)

@@ -69,13 +69,10 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
                 homeViewModel.amountsState().collect() { state ->
                     val currentAccount = state?.accounts?.get(index)
                     if(currentAccount != null){
-                        Log.d("HomeViewModel: currentAccount.balance", "${currentAccount.balance} -- ${currentAccount.isLoadingBalance}")
                         if(currentAccount.balance != null && currentAccount.isLoadingBalance != null) {
-                            Log.d("HomeViewModel: ", "primer if")
                             setupAmounts(currentAccount)
                         }
                         if(currentAccount.balance == null && currentAccount.isLoadingBalance != null){
-                            Log.d("HomeViewModel: ", "segundo if")
                             setupAmountError()
                         }
                     }
