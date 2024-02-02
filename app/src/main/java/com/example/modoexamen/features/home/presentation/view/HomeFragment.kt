@@ -14,6 +14,7 @@ import com.example.modoexamen.MainActivity
 import com.example.modoexamen.R
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentHomeBinding
+import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.presentation.components.AccountFragment
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
@@ -23,12 +24,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var viewModel: HomeViewModel
     private lateinit var viewPager: ViewPager2
     private var accountsLength: Int = 0
+    private var meData: Me? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
         val appContainer = (requireActivity() as MainActivity).appContainer
         viewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
+
         setupObservers()
     }
 
@@ -41,6 +44,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         is UiState.Loading -> {}
                         is UiState.Success -> {
                             accountsLength = state.data.accounts.size
+                            meData = state.data
                             setupAccountsViewPager()
                         }
                         is UiState.Error -> {
@@ -69,6 +73,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         override fun createFragment(position: Int): Fragment {
             val fragment = AccountFragment()
             val bundle = Bundle()
+            // bundle.putString("id", meData!!.accounts[position].id)
             bundle.putInt("index", position)
             fragment.arguments = bundle
             return fragment

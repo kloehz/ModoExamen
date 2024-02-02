@@ -1,6 +1,5 @@
 package com.example.modoexamen.features.login.utils
 
-import androidx.core.content.res.TypedArrayUtils.getString
 import com.example.modoexamen.R
 import com.example.modoexamen.shared.model.ErrorCodes
 fun getLoginErrorMessage(errorCode: ErrorCodes): Int {

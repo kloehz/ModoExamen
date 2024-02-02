@@ -15,6 +15,7 @@ import com.example.modoexamen.R
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentAccountBinding
 import com.example.modoexamen.features.home.data.model.Account
+import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
 import com.example.modoexamen.features.home.utils.getAccountType
 import com.example.modoexamen.utils.formatMoney
@@ -24,6 +25,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     private lateinit var binding: FragmentAccountBinding
     private lateinit var homeViewModel: HomeViewModel
     private var index: Int = -1
+    private lateinit var meData: Me
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,8 +33,8 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         val appContainer = (requireActivity() as MainActivity).appContainer
         homeViewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
 
-        arguments?.let{argumentIndex ->
-            index = argumentIndex.getInt("index")
+        arguments?.let{
+            index = it.getInt("index")
         }
         setupObservers()
     }
@@ -50,7 +52,8 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
 
                         }
                         is UiState.Success -> {
-                            setupAccountComponent(state.data!!.accounts[index])
+                            meData = state.data
+                            setupAccountComponent(meData.accounts[index])
                         }
 
                         is UiState.Error -> {
@@ -64,17 +67,15 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.amountsState().collect() { state ->
-                    when (state) {
-                        is UiState.Initial -> {
-
+                    val currentAccount = state?.accounts?.get(index)
+                    if(currentAccount != null){
+                        Log.d("HomeViewModel: currentAccount.balance", "${currentAccount.balance} -- ${currentAccount.isLoadingBalance}")
+                        if(currentAccount.balance != null && currentAccount.isLoadingBalance != null) {
+                            Log.d("HomeViewModel: ", "primer if")
+                            setupAmounts(currentAccount)
                         }
-                        is UiState.Loading -> {
-
-                        }
-                        is UiState.Success -> {
-                            setupAmounts(state.data.accounts[index])
-                        }
-                        is UiState.Error -> {
+                        if(currentAccount.balance == null && currentAccount.isLoadingBalance != null){
+                            Log.d("HomeViewModel: ", "segundo if")
                             setupAmountError()
                         }
                     }
@@ -91,7 +92,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     }
 
     private fun setupAmounts(account: Account){
-        if(account.balance != null) {
+        if(account.balance != null && account.isLoadingBalance != null) {
             val (amount, cents) = formatMoney(account.balance!!)
             binding.amount.text = amount
             binding.centAmount.text = cents

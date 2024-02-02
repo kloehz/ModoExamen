@@ -1,6 +1,8 @@
 package com.example.modoexamen.features.home.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 enum class AccountTypes(val code: String) {
     SAVINGS("CA"),
@@ -37,6 +39,7 @@ data class Me(
     @SerializedName("suggested_banks_by_cards") val suggestedBanksByCards: List<Any>
 )
 
+@Parcelize
 data class Account(
     val bank: Bank,
     val createdAt: String,
@@ -44,10 +47,11 @@ data class Account(
     val favourite: Boolean,
     val id: String,
     var balance: Int?,
+    var isLoadingBalance: Boolean?,
     @SerializedName("last_digits") val lastDigits: String,
     val schema: String,
     val type: AccountTypes
-)
+) : Parcelable
 
 data class Card(
     val bank: Any,
@@ -81,11 +85,12 @@ data class SuggestedBank(
     val name: String
 )
 
+@Parcelize
 data class Bank(
     val id: String,
     @SerializedName("image_url") val imageUrl: String,
     val name: String
-)
+) : Parcelable
 
 data class CardArt(
     val active: Boolean
