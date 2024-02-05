@@ -1,11 +1,19 @@
 package com.example.modoexamen
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.modoexamen.configuration.NetworkConfiguration
 import com.example.modoexamen.features.home.data.provider.HomeRetrofitProvider
 import com.example.modoexamen.features.home.data.provider.PromotionsRetrofitProvider
+import com.example.modoexamen.features.login.data.model.KnowUser
+import com.example.modoexamen.features.login.data.provider.LoginRoomProvider
+import com.example.modoexamen.shared.providers.DataBasesProvider
 import com.example.modoexamen.utils.DependenciesContainer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     lateinit var appContainer: DependenciesContainer
@@ -14,12 +22,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         NetworkConfiguration.initialize()
-        initializeProviders()
+        initializeProviders(this)
         appContainer = DependenciesContainer()
     }
 
-    private fun initializeProviders(){
+    private fun initializeProviders(context: Context){
         HomeRetrofitProvider().initialize()
         PromotionsRetrofitProvider().initialize()
+        LoginRoomProvider().initialize(context)
+
+        // Execute the query on IO thread
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO){
+                val loggedUserDao = DataBasesProvider(context).provide()
+                loggedUserDao.setLoggedUserInfo(KnowUser("37930873","Guido", "Cotelesso"))
+            }
+        }
     }
 }

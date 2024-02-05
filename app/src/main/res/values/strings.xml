@@ -14,4 +14,5 @@
     <string name="your_promotions">TUS PROMOCIONES</string>
     <string name="your_accounts">TUS CUENTAS</string>
     <string name="your_activity">TU ACTIVIDAD</string>
+    <string name="hi_user">Hola\n%s!</string>
 </resources>

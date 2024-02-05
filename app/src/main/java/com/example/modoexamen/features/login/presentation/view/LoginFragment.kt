@@ -1,5 +1,6 @@
 package com.example.modoexamen.features.login.presentation.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.example.modoexamen.databinding.FragmentLoginBinding
 import com.example.modoexamen.features.login.data.datasource.remote.RemoteLoginDataSource
 import com.example.modoexamen.features.home.data.provider.HomeRetrofitProvider
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
+import com.example.modoexamen.features.login.data.model.KnowUser
 import com.example.modoexamen.features.login.data.service.LoginApiService
 import com.example.modoexamen.features.login.domain.usecase.LoginRepositoryImplement
 import com.example.modoexamen.features.login.presentation.components.PasswordDotsFragment
@@ -30,6 +32,7 @@ import com.example.modoexamen.features.login.utils.getLoginErrorMessage
 import com.example.modoexamen.shared.model.ErrorCodes
 import com.example.modoexamen.utils.DependenciesContainer
 import kotlinx.coroutines.launch
+
 
 class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnNumberClickListener {
     private lateinit var binding: FragmentLoginBinding

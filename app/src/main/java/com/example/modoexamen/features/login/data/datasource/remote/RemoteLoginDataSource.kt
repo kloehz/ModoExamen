@@ -5,6 +5,7 @@ import com.example.modoexamen.features.login.data.model.LoginResponse
 import com.example.modoexamen.features.login.data.service.LoginApiService
 import com.example.modoexamen.shared.model.ErrorResponse
 import com.example.modoexamen.shared.model.ResponseResult
+import com.example.modoexamen.shared.providers.DataBasesProvider
 import com.google.gson.Gson
 import retrofit2.HttpException
 
