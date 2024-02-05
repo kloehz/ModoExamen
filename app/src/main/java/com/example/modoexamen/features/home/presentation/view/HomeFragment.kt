@@ -13,6 +13,7 @@ import com.example.modoexamen.MainActivity
 import com.example.modoexamen.R
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentHomeBinding
+import com.example.modoexamen.features.feed.presentation.components.FeedItemComposable
 import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.presentation.components.AccountFragment
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
@@ -30,8 +31,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding = FragmentHomeBinding.bind(view)
         val appContainer = (requireActivity() as MainActivity).appContainer
         viewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
-
         setupObservers()
+        setupFeed()
     }
 
     private fun setupObservers(){
@@ -65,6 +66,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewPager.setPageTransformer(pageTransformer)
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
+    }
+
+    private fun setupFeed(){
+        binding.feedItem.setContent {
+            FeedItemComposable()
+        }
     }
 
     private inner class ScreenSlidePagerAdapter(fa: Fragment) : FragmentStateAdapter(fa) {

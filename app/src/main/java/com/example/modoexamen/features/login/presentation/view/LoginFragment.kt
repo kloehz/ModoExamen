@@ -30,8 +30,11 @@ import com.example.modoexamen.features.login.utils.KEYBOARD_NUMBERS
 import com.example.modoexamen.features.login.utils.PASSWORD_LENGTH
 import com.example.modoexamen.features.login.utils.getLoginErrorMessage
 import com.example.modoexamen.shared.model.ErrorCodes
+import com.example.modoexamen.shared.providers.DataBasesProvider
 import com.example.modoexamen.utils.DependenciesContainer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnNumberClickListener {
@@ -59,6 +62,15 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
             .commitNow()
         appContainer = (requireActivity() as MainActivity).appContainer
         homeViewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
+
+        // In real contexto, it need to be in the viewmodel
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO){
+                val loggedUserDao = DataBasesProvider(requireContext()).provide()
+                val (_, firstName, lastName) = loggedUserDao.getLoggedUserInfo()
+                binding.nameTextView.text = "$firstName $lastName"
+            }
+        }
         setInitialComponentProperties()
         setUpMeObserver()
         setUpLoginObserver()
@@ -99,10 +111,8 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
                         }
                         is UiState.Error -> {
                             if(result.error == ErrorCodes.authentication_fail) availableRetries--
-                            if(result.error != null){
-                                val errorMessage = getLoginErrorMessage(result.error)
-                                binding.errorText.text = getString(errorMessage, availableRetries.toString())
-                            }
+                            val errorMessage = getLoginErrorMessage(result.error)
+                            binding.errorText.text = getString(errorMessage, availableRetries.toString())
                             binding.errorText.visibility = View.VISIBLE
                             binding.textAndDotsContainer.visibility = View.VISIBLE
                             binding.progressBar.visibility = View.GONE
