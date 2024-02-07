@@ -74,8 +74,21 @@
                         android:textStyle="bold"
                         android:textSize="12sp"  />
                 </LinearLayout>
-
             </com.skydoves.androidveil.VeilLayout>
+            <LinearLayout
+                android:id="@+id/hide_amount_linear_layout"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:paddingVertical="2dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$ ・ ・ ・ ・ ・"
+                    android:textStyle="bold"
+                    android:textColor="@color/primaryBlack"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
             <com.skydoves.androidveil.VeilLayout
                 android:id="@+id/account_type_skeleton"

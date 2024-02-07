@@ -19,6 +19,7 @@ import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
 import com.example.modoexamen.features.home.utils.getAccountType
 import com.example.modoexamen.shared.utils.formatMoney
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AccountFragment : Fragment(R.layout.fragment_account) {
@@ -69,13 +70,26 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
                 homeViewModel.amountsState().collect() { state ->
                     val currentAccount = state?.accounts?.get(index)
                     if(currentAccount != null){
-                        Log.d("Launch: ", "${currentAccount.balance != null} ${currentAccount.balanceHasLoaded}")
                         if(currentAccount.balance != null && currentAccount.balanceHasLoaded) {
                             setupAmounts(currentAccount)
                         }
                         if(currentAccount.balance == null && currentAccount.balanceHasLoaded){
                             setupAmountError()
                         }
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.hideAmounts.collect{ hideAmounts ->
+                    if(hideAmounts) {
+                        binding.hideAmountLinearLayout.visibility = View.VISIBLE
+                        binding.balanceSkeleton.visibility = View.GONE
+                    } else {
+                        binding.hideAmountLinearLayout.visibility = View.GONE
+                        binding.balanceSkeleton.visibility = View.VISIBLE
                     }
                 }
             }
@@ -92,7 +106,6 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     private fun setupAmounts(account: Account){
         if(account.balance != null && account.balanceHasLoaded) {
             val (amount, cents) = formatMoney(account.balance!!)
-            Log.d("formatMoney: ", "$amount - $cents")
             binding.amount.text = amount
             binding.centAmount.text = cents
             binding.balanceSkeleton.unVeil()

@@ -54,6 +54,7 @@
                 android:backgroundTint="@color/secondaryGray08"
                 android:src="@drawable/money_rounded" />
             <ImageButton
+                android:id="@+id/hide_ammounts_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingVertical="20dp"

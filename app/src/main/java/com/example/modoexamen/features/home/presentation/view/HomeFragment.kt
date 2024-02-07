@@ -30,7 +30,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var accountsLength: Int = 0
     private var meData: Me? = null
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
@@ -39,7 +38,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         feedViewModel = ViewModelProvider(requireActivity(), appContainer.feedViewModel)[FeedViewModel::class.java]
         setupHomeObserver()
         setupFeedObserver()
+        setupComponents()
+    }
+
+    private fun setupComponents(){
         setupShimmerFeed()
+
+        binding.hideAmmountsButton.setOnClickListener{
+            viewModel.hideAmounts.value = !viewModel.hideAmounts.value
+        }
     }
 
     private fun setupHomeObserver(){
