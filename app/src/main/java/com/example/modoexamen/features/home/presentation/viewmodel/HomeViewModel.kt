@@ -1,6 +1,7 @@
 package com.example.modoexamen.features.home.presentation.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 internal class HomeViewModel(private val repo: HomeRepository): ViewModel() {
     private val homeStateFlow = MutableStateFlow<UiState<Me>>(UiState.Initial())
     private val accountsStateFlow = MutableSharedFlow<Me?>(replay = 1)
+
     fun getMe() = viewModelScope.launch {
         homeStateFlow.value = UiState.Loading()
         val result = repo.invokeMe()

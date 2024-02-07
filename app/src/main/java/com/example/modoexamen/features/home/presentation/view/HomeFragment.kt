@@ -3,6 +3,7 @@ package com.example.modoexamen.features.home.presentation.view
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +14,9 @@ import com.example.modoexamen.MainActivity
 import com.example.modoexamen.R
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentHomeBinding
+import com.example.modoexamen.features.feed.data.model.FeedResponseItem
 import com.example.modoexamen.features.feed.presentation.components.FeedItemComposable
+import com.example.modoexamen.features.feed.presentation.viewmodel.FeedViewModel
 import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.presentation.components.AccountFragment
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
@@ -23,24 +26,30 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var viewPager: ViewPager2
+    private lateinit var feedViewModel: FeedViewModel
     private var accountsLength: Int = 0
     private var meData: Me? = null
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
         val appContainer = (requireActivity() as MainActivity).appContainer
         viewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
-        setupObservers()
-        setupFeed()
+        feedViewModel = ViewModelProvider(requireActivity(), appContainer.feedViewModel)[FeedViewModel::class.java]
+        setupHomeObserver()
+        setupFeedObserver()
+        setupShimmerFeed()
     }
 
-    private fun setupObservers(){
+    private fun setupHomeObserver(){
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.homeState().collect{state ->
                     when(state) {
-                        is UiState.Initial -> {}
+                        is UiState.Initial -> {
+                            feedViewModel.getFeed()
+                        }
                         is UiState.Loading -> {}
                         is UiState.Success -> {
                             accountsLength = state.data.accounts.size
@@ -51,6 +60,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun setupFeedObserver(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                feedViewModel.feedState().collect { state ->
+                        when(state){
+                            is UiState.Initial -> {}
+                            is UiState.Loading -> {}
+                            is UiState.Success -> {
+                                setupFeed(state.data)
+                            }
+                            is UiState.Error -> {}
+                        }
                 }
             }
         }
@@ -68,9 +94,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewPager.adapter = pagerAdapter
     }
 
-    private fun setupFeed(){
+    private fun setupShimmerFeed() {
         binding.feedItem.setContent {
-            FeedItemComposable()
+            FeedItemComposable(feedItem = null, showShimmer = true)
+        }
+    }
+
+    private fun setupFeed(feedItem: List<FeedResponseItem>){
+        binding.feedItem.visibility = View.GONE
+        val feedSize = if(feedItem.size > 5) 5 else feedItem.size
+        for(i in 0 until feedSize){
+            var composeView = ComposeView(requireContext())
+            composeView.setContent {
+                FeedItemComposable(feedItem = feedItem[i])
+            }
+            binding.feedLinearLayout.addView(composeView)
         }
     }
 
@@ -79,7 +117,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         override fun createFragment(position: Int): Fragment {
             val fragment = AccountFragment()
             val bundle = Bundle()
-            // bundle.putString("id", meData!!.accounts[position].id)
             bundle.putInt("index", position)
             fragment.arguments = bundle
             return fragment

@@ -46,8 +46,8 @@ data class Account(
     @SerializedName("currency_code") val currencyCode: String,
     val favourite: Boolean,
     val id: String,
-    var balance: Int?,
-    var isLoadingBalance: Boolean?,
+    var balance: Double?,
+    var balanceHasLoaded: Boolean = false,
     @SerializedName("last_digits") val lastDigits: String,
     val schema: String,
     val type: AccountTypes

@@ -15,10 +15,10 @@ import com.example.modoexamen.MainActivity
 import com.example.modoexamen.R
 import com.example.modoexamen.core.UiState
 import com.example.modoexamen.databinding.FragmentLoginBinding
+import com.example.modoexamen.features.feed.presentation.viewmodel.FeedViewModel
 import com.example.modoexamen.features.login.data.datasource.remote.RemoteLoginDataSource
 import com.example.modoexamen.features.home.data.provider.HomeRetrofitProvider
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
-import com.example.modoexamen.features.login.data.model.KnowUser
 import com.example.modoexamen.features.login.data.service.LoginApiService
 import com.example.modoexamen.features.login.domain.usecase.LoginRepositoryImplement
 import com.example.modoexamen.features.login.presentation.components.PasswordDotsFragment
@@ -31,7 +31,7 @@ import com.example.modoexamen.features.login.utils.PASSWORD_LENGTH
 import com.example.modoexamen.features.login.utils.getLoginErrorMessage
 import com.example.modoexamen.shared.model.ErrorCodes
 import com.example.modoexamen.shared.providers.DataBasesProvider
-import com.example.modoexamen.utils.DependenciesContainer
+import com.example.modoexamen.shared.utils.DependenciesContainer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,6 +45,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
     private var isLogging = false
     private lateinit var appContainer: DependenciesContainer
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var feedViewModel: FeedViewModel
     private val viewModel by viewModels<LoginViewModel> {
         LoginViewModelFactory(
             LoginRepositoryImplement(RemoteLoginDataSource(
@@ -62,6 +63,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
             .commitNow()
         appContainer = (requireActivity() as MainActivity).appContainer
         homeViewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
+        feedViewModel = ViewModelProvider(requireActivity(), appContainer.feedViewModel)[FeedViewModel::class.java]
 
         // In real contexto, it need to be in the viewmodel
         lifecycleScope.launch {
@@ -108,6 +110,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
                         }
                         is UiState.Success -> {
                             homeViewModel.getMe()
+                            feedViewModel.getFeed()
                         }
                         is UiState.Error -> {
                             if(result.error == ErrorCodes.authentication_fail) availableRetries--
@@ -129,7 +132,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
     private fun setUpMeObserver(){
         viewLifecycleOwner.lifecycleScope.launch{
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
-                homeViewModel.homeState().collect{result->
+                homeViewModel.homeState().collect{ result ->
                     when(result) {
                         is UiState.Initial -> {}
                         is UiState.Loading -> {}

@@ -3,7 +3,7 @@ package com.example.modoexamen.features.home.data.model
 import com.google.gson.annotations.SerializedName
 
 data class BankAccount(
-    val balance: Int,
+    val balance: Double,
     @SerializedName("balance_updated_at") val balanceUpdatedAt: String,
     @SerializedName("currency_code") val currencyCode: String,
     @SerializedName("feature_flags") val featureFlags: FeatureFlags,

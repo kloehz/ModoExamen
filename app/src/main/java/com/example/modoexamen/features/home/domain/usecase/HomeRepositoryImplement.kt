@@ -15,6 +15,7 @@ internal class HomeRepositoryImplement(private val dataSource: HomeDataSource): 
 
     override suspend fun invokeGetAccountsAmount(bankId: String): ResponseResult<Me> {
         val bankAmountResponse = dataSource.getAccountsAmount(bankId)
+        Log.d("formatMoney: ", meData.response.toString())
         meData.isSuccessful = bankAmountResponse.isSuccessful
         meData.internalError = bankAmountResponse.internalError
         val accountsById = meData.response!!.accounts.associateBy { it.id }
@@ -22,12 +23,15 @@ internal class HomeRepositoryImplement(private val dataSource: HomeDataSource): 
             bankAmountResponse.response!!.forEach { bankAccount ->
                 accountsById[bankAccount.id]?.apply {
                     balance = bankAccount.balance
-                    isLoadingBalance = false
+                    balanceHasLoaded = true
                 }
             }
         } else {
-            meData.response!!.accounts.forEach{
-                if(it.isLoadingBalance == null) it.isLoadingBalance = false
+            meData.response!!.accounts.forEach {
+                if(it.bank.id == bankId) {
+                    it.balance = null
+                    it.balanceHasLoaded = true
+                }
             }
         }
         return meData

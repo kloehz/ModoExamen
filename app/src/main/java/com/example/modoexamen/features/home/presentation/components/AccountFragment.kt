@@ -18,7 +18,7 @@ import com.example.modoexamen.features.home.data.model.Account
 import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
 import com.example.modoexamen.features.home.utils.getAccountType
-import com.example.modoexamen.utils.formatMoney
+import com.example.modoexamen.shared.utils.formatMoney
 import kotlinx.coroutines.launch
 
 class AccountFragment : Fragment(R.layout.fragment_account) {
@@ -69,10 +69,11 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
                 homeViewModel.amountsState().collect() { state ->
                     val currentAccount = state?.accounts?.get(index)
                     if(currentAccount != null){
-                        if(currentAccount.balance != null && currentAccount.isLoadingBalance != null) {
+                        Log.d("Launch: ", "${currentAccount.balance != null} ${currentAccount.balanceHasLoaded}")
+                        if(currentAccount.balance != null && currentAccount.balanceHasLoaded) {
                             setupAmounts(currentAccount)
                         }
-                        if(currentAccount.balance == null && currentAccount.isLoadingBalance != null){
+                        if(currentAccount.balance == null && currentAccount.balanceHasLoaded){
                             setupAmountError()
                         }
                     }
@@ -89,8 +90,9 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     }
 
     private fun setupAmounts(account: Account){
-        if(account.balance != null && account.isLoadingBalance != null) {
+        if(account.balance != null && account.balanceHasLoaded) {
             val (amount, cents) = formatMoney(account.balance!!)
+            Log.d("formatMoney: ", "$amount - $cents")
             binding.amount.text = amount
             binding.centAmount.text = cents
             binding.balanceSkeleton.unVeil()
@@ -105,6 +107,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .into(binding.bankImage)
         val accountType = getAccountType(account.type)
+        binding.bankName.text = account.bank.name
         binding.accountType.text = accountType
         binding.accountTypeNumber.text = " ・ ${account.lastDigits}"
         binding.accountTypeSkeleton.unVeil()

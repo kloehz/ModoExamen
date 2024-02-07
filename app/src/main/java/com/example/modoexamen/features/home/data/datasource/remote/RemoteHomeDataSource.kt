@@ -1,5 +1,6 @@
 package com.example.modoexamen.features.home.data.datasource.remote
 
+import android.util.Log
 import com.example.modoexamen.features.home.data.model.BankAccount
 import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.data.service.HomeApiService
@@ -47,6 +48,8 @@ internal class RemoteHomeDataSource(private val apiService: HomeApiService): Hom
         val gson = Gson()
         try {
             val response = apiService.getAccountsAmount(bankId)
+            Log.d("getAccountsAmount", response.isSuccessful.toString())
+            Log.d("getAccountsAmount", response.body().toString())
             result.isSuccessful = response.isSuccessful
             if(response.isSuccessful) {
                 result.response = response.body()
