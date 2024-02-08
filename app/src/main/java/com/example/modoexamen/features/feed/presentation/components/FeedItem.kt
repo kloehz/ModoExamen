@@ -1,6 +1,5 @@
 package com.example.modoexamen.features.feed.presentation.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
