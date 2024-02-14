@@ -74,9 +74,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeProviders(context: Context){
-        HomeRetrofitProvider().initialize()
-        PromotionsRetrofitProvider().initialize()
-        FeedRetrofitProvider().initialize()
+        HomeRetrofitProvider.getInstanceOrInitialize()
+        PromotionsRetrofitProvider.getInstanceOrInitialize()
+        FeedRetrofitProvider.getInstanceOrInitialize()
         LoginRoomProvider().initialize(context)
 
         // Execute the query in IO thread

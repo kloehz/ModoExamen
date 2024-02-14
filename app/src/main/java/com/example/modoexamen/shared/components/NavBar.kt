@@ -2,7 +2,6 @@ package com.example.modoexamen.shared.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,9 +14,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -50,6 +51,7 @@ val tabs = listOf(
 fun NavBar(navController: NavController) {
     var offsetState = remember { Animatable(0f) }
     var size by remember { mutableStateOf(IntSize.Zero) }
+    var indexSelected by remember { mutableIntStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
 
     Box(
@@ -61,8 +63,11 @@ fun NavBar(navController: NavController) {
             )
             .background(color = colorResource(id = R.color.brandGray))
     ) {
-        Row(modifier = Modifier.fillMaxWidth()
-            .padding(end = 20.dp, start = 20.dp, top = 16.dp)){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 20.dp, start = 20.dp, top = 8.dp)
+        ) {
             Box(
                 modifier = Modifier
                     .offset(
@@ -76,41 +81,35 @@ fun NavBar(navController: NavController) {
                     .background(color = colorResource(R.color.primaryWhite))
             )
         }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Row(verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 20.dp, start = 20.dp, top = 16.dp)
-                .onGloballyPositioned {cords ->
+                .padding(end = 20.dp, start = 20.dp, top = 8.dp)
+                .onGloballyPositioned { cords ->
                     size = cords.size
-                }
-        ) {
+                }) {
             tabs.forEachIndexed { index, tabInfo ->
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .clip(
-                            RoundedCornerShape(20.dp)
-                        )
-                        .padding(16.dp)
+                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
+                    .clip(
+                        RoundedCornerShape(20.dp)
+                    )
+                    .padding(16.dp)
                     .clickable {
                         // navController.navigate()
+                        indexSelected = index
                         coroutineScope.launch {
                             offsetState.animateTo(
-                                targetValue = 93f * index,
-                                animationSpec = tween(
-                                    durationMillis = 500,
-                                    delayMillis = 0
+                                targetValue = 93f * index, animationSpec = tween(
+                                    durationMillis = 500, delayMillis = 0
                                 )
                             )
                         }
-                    }
-
-                ) {
-                    Image(
+                    }) {
+                    Icon(
                         painter = painterResource(id = tabInfo.icon),
-                        contentDescription = "home"
+                        contentDescription = "home",
+                        tint = colorResource(id = if (indexSelected == index) R.color.primaryPaymentDark else R.color.primaryBlack)
                     )
                     Text(text = tabInfo.title, fontSize = 10.sp)
                 }

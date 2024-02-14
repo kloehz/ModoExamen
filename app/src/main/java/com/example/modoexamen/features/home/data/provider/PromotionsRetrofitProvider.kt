@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 internal class PromotionsRetrofitProvider() {
     private val okHttpClient by lazy { OkHttpProvider().provide() }
 
-    fun initialize() {
+    private fun initialize() {
         instance = Retrofit.Builder()
             .baseUrl(Constants.PREPROD_PROMOTIONS_URL)
             .client(okHttpClient)
@@ -17,6 +17,12 @@ internal class PromotionsRetrofitProvider() {
     }
 
     companion object {
-        lateinit var instance: Retrofit
+        private var instance: Retrofit? = null
+        fun getInstanceOrInitialize(): Retrofit {
+            if(instance == null ){
+                PromotionsRetrofitProvider().initialize()
+                return instance!!
+            } else return instance!!
+        }
     }
 }

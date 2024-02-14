@@ -12,7 +12,7 @@ import com.example.modoexamen.features.home.domain.usecase.HomeRepositoryImpleme
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModelFactory
 
 class DependenciesContainer {
-    private val homeApiBaseUrl = HomeRetrofitProvider.instance
+    private val homeApiBaseUrl = HomeRetrofitProvider.getInstanceOrInitialize()
     val homeViewModel = HomeViewModelFactory(
         HomeRepositoryImplement(
             RemoteHomeDataSource(
@@ -21,7 +21,7 @@ class DependenciesContainer {
         )
     )
 
-    private val feedApiBaseUrl = FeedRetrofitProvider.instance
+    private val feedApiBaseUrl = FeedRetrofitProvider.getInstanceOrInitialize()
     val feedViewModel = FeedViewModelFactory(
         FeedRepositoryImplement(
             RemoteFeedDatasource(

@@ -1,7 +1,6 @@
 package com.example.modoexamen.features.home.presentation.components
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.lifecycle.Lifecycle
@@ -19,7 +18,6 @@ import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
 import com.example.modoexamen.features.home.utils.getAccountType
 import com.example.modoexamen.shared.utils.formatMoney
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AccountFragment : Fragment(R.layout.fragment_account) {

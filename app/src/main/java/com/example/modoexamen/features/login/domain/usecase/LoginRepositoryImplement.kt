@@ -11,6 +11,5 @@ internal class LoginRepositoryImplement(
 ) : LoginRepository {
     override suspend fun invoke(request: LoginRequest): ResponseResult<LoginResponse> {
         return dataSource.doLogin(request)
-
     }
 }

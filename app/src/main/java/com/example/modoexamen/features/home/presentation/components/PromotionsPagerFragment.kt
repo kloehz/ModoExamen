@@ -41,7 +41,7 @@ class PromotionsPagerFragment : Fragment(R.layout.fragment_promotions_pager) {
         PromotionsViewModelFactory(
             PromotionsRepositoryImplement(
                 RemotePromotionsDataSource(
-                    PromotionsRetrofitProvider.instance.create(PromotionsApiService::class.java)
+                    PromotionsRetrofitProvider.getInstanceOrInitialize().create(PromotionsApiService::class.java)
                 )
             )
         )
@@ -99,7 +99,7 @@ class PromotionsPagerFragment : Fragment(R.layout.fragment_promotions_pager) {
             Glide.with(requireContext())
                 .load(cardsList[position].content.image.optionalImagesPack.landscapeApp)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                .apply(RequestOptions.bitmapTransform(RoundedCorners(100)))
+                .apply(RequestOptions.bitmapTransform(RoundedCorners((100  / resources.displayMetrics.density).toInt())))
                 .into(imageView)
             return ImageViewFragment(imageView)
         }

@@ -1,6 +1,7 @@
 package com.example.modoexamen.features.home.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.compose.ui.platform.ComposeView
@@ -20,6 +21,7 @@ import com.example.modoexamen.features.feed.presentation.viewmodel.FeedViewModel
 import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.presentation.components.AccountFragment
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
+import com.example.modoexamen.shared.utils.isSmallScreen
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -91,7 +93,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupAccountsViewPager(){
         viewPager = binding.accountsPager
-        val pageTranslationX = 250
+        val pageSpacer = if(isSmallScreen(requireContext())) R.dimen.viewpager_next_item_visible_small_device else R.dimen.viewpager_next_item_visible_large_device
+        val pageTranslationX = resources.getDimensionPixelOffset(pageSpacer) //250
         val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
             page.translationX = -pageTranslationX * position
         }

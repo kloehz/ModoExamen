@@ -1,6 +1,5 @@
 package com.example.modoexamen.features.login.presentation.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -27,6 +26,7 @@ import com.example.modoexamen.features.login.presentation.view.adapter.KeyboardG
 import com.example.modoexamen.features.login.presentation.viewmodel.LoginViewModel
 import com.example.modoexamen.features.login.presentation.viewmodel.LoginViewModelFactory
 import com.example.modoexamen.features.login.utils.KEYBOARD_NUMBERS
+import com.example.modoexamen.features.login.utils.KeyboardUtils
 import com.example.modoexamen.features.login.utils.PASSWORD_LENGTH
 import com.example.modoexamen.features.login.utils.getLoginErrorMessage
 import com.example.modoexamen.shared.model.ErrorCodes
@@ -49,7 +49,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
     private val viewModel by viewModels<LoginViewModel> {
         LoginViewModelFactory(
             LoginRepositoryImplement(RemoteLoginDataSource(
-                HomeRetrofitProvider.instance.create(
+                HomeRetrofitProvider.getInstanceOrInitialize().create(
                     LoginApiService::class.java)))
         )
     }
@@ -65,7 +65,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
         homeViewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]
         feedViewModel = ViewModelProvider(requireActivity(), appContainer.feedViewModel)[FeedViewModel::class.java]
 
-        // In real contexto, it need to be in the viewmodel
+        // In real context, it need to be in the viewModel
         lifecycleScope.launch {
             withContext(Dispatchers.IO){
                 val loggedUserDao = DataBasesProvider(requireContext()).provide()
@@ -100,7 +100,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
     private fun setUpLoginObserver(){
         viewLifecycleOwner.lifecycleScope.launch{
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.loginState().collect{result->
+                viewModel.loginState().collect{ result->
                     when(result) {
                         is UiState.Initial -> {}
                         is UiState.Loading -> {
@@ -148,10 +148,10 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
 
     private fun setInitialComponentProperties(){
         binding.gridContainer.apply {
-            adapter = KeyboardGridAdapter(KEYBOARD_NUMBERS.toList(), this@LoginFragment)
+            adapter = KeyboardGridAdapter(KEYBOARD_NUMBERS.toList(), this@LoginFragment, KeyboardUtils(context))
             layoutManager = GridLayoutManager(context,  3, GridLayoutManager.VERTICAL, false)
-            setHasFixedSize(true)
-            addItemDecoration(KeyboardButtonItemDecoration(3, 26))
+            val buttonsSpacing = resources.getDimensionPixelOffset(R.dimen.login_buttons_spacer)
+            addItemDecoration(KeyboardButtonItemDecoration(3, buttonsSpacing))
         }
     }
 }

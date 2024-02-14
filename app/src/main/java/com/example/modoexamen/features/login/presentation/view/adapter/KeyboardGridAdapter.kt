@@ -1,5 +1,6 @@
 package com.example.modoexamen.features.login.presentation.view.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,15 +8,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.modoexamen.R
 import com.example.modoexamen.databinding.FragmentKeyboardButtonBinding
+import com.example.modoexamen.features.login.utils.KeyboardUtils
+import com.example.modoexamen.shared.utils.isSmallScreen
 
 class KeyboardGridAdapter(
     private val numbersList: List<Pair<String, String>>,
-    private val numberClickListener: OnNumberClickListener
+    private val numberClickListener: OnNumberClickListener,
+    private val keyboardUtils: KeyboardUtils
 ): RecyclerView.Adapter<KeyboardGridAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemBinding = FragmentKeyboardButtonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val holder = ViewHolder(itemBinding)
+        val holder = ViewHolder(itemBinding, parent.context)
 
         itemBinding.root.setOnClickListener {
             // Here we take the touch position if it is != -1
@@ -37,7 +41,7 @@ class KeyboardGridAdapter(
         fun onNumberClick(itemPressed: String)
     }
 
-     inner class ViewHolder(private val binding: FragmentKeyboardButtonBinding): RecyclerView.ViewHolder(binding.root) {
+     inner class ViewHolder(private val binding: FragmentKeyboardButtonBinding, private val context: Context): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Pair<String, String>){
             if(item.first == "DELETE"){
                 binding.imageView.setImageResource(R.drawable.delete_arrow)
@@ -47,8 +51,8 @@ class KeyboardGridAdapter(
             } else if(item.first == "BIOMETRIC"){
                 binding.imageView.setImageResource(R.drawable.biometry)
                 val imageParams = binding.imageView.layoutParams as ViewGroup.LayoutParams
-                imageParams.width = 110
-                imageParams.height = 110
+                imageParams.width = keyboardUtils.getBiometricIconSize()
+                imageParams.height = keyboardUtils.getBiometricIconSize()
                 binding.imageView.layoutParams = imageParams
                 binding.imageView.visibility = View.VISIBLE
                 binding.topText.visibility = View.GONE
