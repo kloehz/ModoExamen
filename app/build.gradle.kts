@@ -71,6 +71,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("com.google.accompanist:accompanist-pager:0.34.0")
     implementation("androidx.navigation:navigation-compose:2.7.6")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
     implementation("androidx.test.espresso:espresso-contrib:3.5.1")

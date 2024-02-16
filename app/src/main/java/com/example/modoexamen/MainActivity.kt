@@ -4,13 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material3.Text
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.modoexamen.configuration.NetworkConfiguration
@@ -20,7 +16,7 @@ import com.example.modoexamen.features.home.data.provider.HomeRetrofitProvider
 import com.example.modoexamen.features.home.data.provider.PromotionsRetrofitProvider
 import com.example.modoexamen.features.login.data.model.KnowUser
 import com.example.modoexamen.features.login.data.provider.LoginRoomProvider
-import com.example.modoexamen.shared.components.NavBar
+import com.example.modoexamen.shared.components.NavBar.NavBar
 import com.example.modoexamen.shared.providers.DataBasesProvider
 import com.example.modoexamen.shared.utils.DependenciesContainer
 import com.example.modoexamen.shared.utils.hide

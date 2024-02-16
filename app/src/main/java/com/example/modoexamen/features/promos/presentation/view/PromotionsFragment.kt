@@ -1,0 +1,13 @@
+package com.example.modoexamen.features.promos.presentation.view
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.View
+import com.example.modoexamen.R
+
+class PromotionsFragment : Fragment(R.layout.fragment_promotions) {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+}
