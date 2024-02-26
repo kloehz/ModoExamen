@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="NavBarPreview">
-        <State />
-      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -20,9 +17,6 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-02-14T20:18:23.099823Z" />
         </State>
-      </entry>
-      <entry key="tabBarHasFourItems()">
-        <State />
       </entry>
     </value>
   </component>

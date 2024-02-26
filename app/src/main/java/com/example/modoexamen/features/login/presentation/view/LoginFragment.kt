@@ -137,7 +137,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
                         is UiState.Initial -> {}
                         is UiState.Loading -> {}
                         is UiState.Success -> {
-                            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                            findNavController().navigate(R.id.action_loginFragment_to_navBarManagerFragment)
                         }
                         is UiState.Error -> {}
                     }

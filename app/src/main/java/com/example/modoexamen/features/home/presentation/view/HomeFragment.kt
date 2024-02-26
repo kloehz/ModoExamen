@@ -35,7 +35,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("savedInstanceState: ", savedInstanceState.toString())
         binding = FragmentHomeBinding.bind(view)
         val appContainer = (requireActivity() as MainActivity).appContainer
         viewModel = ViewModelProvider(requireActivity(), appContainer.homeViewModel)[HomeViewModel::class.java]

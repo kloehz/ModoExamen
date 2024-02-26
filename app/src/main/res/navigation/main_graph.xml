@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_loginFragment_to_promotionsFragment"
             app:destination="@id/promotionsFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_navBarManagerFragment"
+            app:destination="@id/navBarManagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -28,4 +31,9 @@
         android:name="com.example.modoexamen.features.promos.presentation.view.PromotionsFragment"
         android:label="fragment_promotions"
         tools:layout="@layout/fragment_promotions" />
+    <fragment
+        android:id="@+id/navBarManagerFragment"
+        android:name="com.example.modoexamen.shared.components.NavBar.NavBarManagerFragment"
+        android:label="fragment_nav_bar_manager"
+        tools:layout="@layout/fragment_nav_bar_manager" />
 </navigation>

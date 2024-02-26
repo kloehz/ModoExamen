@@ -19,10 +19,10 @@ internal class PromotionsRetrofitProvider() {
     companion object {
         private var instance: Retrofit? = null
         fun getInstanceOrInitialize(): Retrofit {
-            if(instance == null ){
+            return if(instance == null ){
                 PromotionsRetrofitProvider().initialize()
-                return instance!!
-            } else return instance!!
+                instance!!
+            } else instance!!
         }
     }
 }

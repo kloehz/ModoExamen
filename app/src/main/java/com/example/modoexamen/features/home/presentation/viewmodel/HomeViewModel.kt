@@ -34,7 +34,7 @@ internal class HomeViewModel(private val repo: HomeRepository): ViewModel() {
     }
 
     private fun getAccountsAmount(id: String) = viewModelScope.launch {
-        var result = repo.invokeGetAccountsAmount(id)
+        val result = repo.invokeGetAccountsAmount(id)
         accountsStateFlow.emit(result.response)
     }
 

@@ -1,7 +1,5 @@
 package com.example.modoexamen.shared.utils
-import com.example.modoexamen.features.home.data.provider.HomeRetrofitProvider
 import org.junit.Assert.assertNotNull
-import org.junit.Before
 import org.junit.Test
 
 class DependenciesContainerTest {

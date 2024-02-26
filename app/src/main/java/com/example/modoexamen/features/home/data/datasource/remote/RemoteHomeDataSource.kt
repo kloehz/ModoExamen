@@ -11,7 +11,7 @@ import retrofit2.HttpException
 
 internal class RemoteHomeDataSource(private val apiService: HomeApiService): HomeDataSource {
     override suspend fun getMe(): ResponseResult<Me> {
-        var result = ResponseResult<Me>()
+        val result = ResponseResult<Me>()
         val gson = Gson()
         try {
             val response = apiService.getMe()
@@ -44,12 +44,10 @@ internal class RemoteHomeDataSource(private val apiService: HomeApiService): Hom
     }
 
     override suspend fun getAccountsAmount(bankId: String): ResponseResult<List<BankAccount>> {
-        var result = ResponseResult<List<BankAccount>>()
+        val result = ResponseResult<List<BankAccount>>()
         val gson = Gson()
         try {
             val response = apiService.getAccountsAmount(bankId)
-            Log.d("getAccountsAmount", response.isSuccessful.toString())
-            Log.d("getAccountsAmount", response.body().toString())
             result.isSuccessful = response.isSuccessful
             if(response.isSuccessful) {
                 result.response = response.body()

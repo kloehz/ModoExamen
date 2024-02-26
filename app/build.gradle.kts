@@ -75,6 +75,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.6")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
     implementation("androidx.test.espresso:espresso-contrib:3.5.1")
+    testImplementation("junit:junit:4.12")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 

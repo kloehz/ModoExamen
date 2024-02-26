@@ -7,12 +7,6 @@ import kotlinx.parcelize.Parcelize
 enum class AccountTypes(val code: String) {
     SAVINGS("CA"),
     CURRENT("CC");
-
-    companion object {
-        fun fromCode(code: String): AccountTypes? {
-            return values().find { it.code == code }
-        }
-    }
 }
 
 data class Me(

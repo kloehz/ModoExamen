@@ -14,23 +14,25 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/main_graph" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationBar"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerTabBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/nav_host_fragment_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:outlineAmbientShadowColor="#00000000"
-        android:outlineSpotShadowColor="#00000000"
-        android:background="#00000000">
-
-        <FrameLayout
-            android:id="@+id/appbarComposeContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#00000000" />
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
-
+        android:orientation="horizontal"
+        app:tabGravity="fill"
+        app:tabIndicatorGravity="stretch"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tabIndicatorAnimationMode="elastic"
+        app:tabIndicatorColor="@color/primaryWhite"
+        app:tabTextAppearance="@style/Tab.TextStyle"
+        app:tabBackground="@drawable/tab_color_selector"
+        app:tabSelectedTextColor="@color/primaryPaymentDark"
+        app:tabIndicator="@drawable/tab_indicator_custom"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,12 +17,4 @@ class NavBarTest {
             .onNodeWithTag("NAVBAR_TEST_TAG")
             .assertExists()
     }
-
-    @Test
-    fun clickingTabChangesSelection() {
-        composeTestRule
-            .onNodeWithTag("NAVBAR_TEST_TAG")
-            .onChildren()
-            .assertAny(hasClickAction())
-    }
 }

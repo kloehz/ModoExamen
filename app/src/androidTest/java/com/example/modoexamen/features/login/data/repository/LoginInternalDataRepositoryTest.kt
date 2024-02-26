@@ -23,7 +23,6 @@ class LoginInternalDataRepositoryTest {
     @Before
     fun setup(){
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        // get the database until the test is up, after it is destroyed
         loginDatabase = Room.inMemoryDatabaseBuilder(context, LoggedUserDatabase::class.java).build()
         internalLoginDataSource = RoomInternalLoginDataSource(loginDatabase)
         repository = LoginInternalDataRepository(internalLoginDataSource)

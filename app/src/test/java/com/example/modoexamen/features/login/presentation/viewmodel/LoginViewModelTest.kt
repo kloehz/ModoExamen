@@ -57,7 +57,7 @@ class LoginViewModelTest {
 
     @Test
     fun `viewModel doLogin returns a successfully UiState`() = runTest {
-        var fakeResponse = ResponseResult<LoginResponse>()
+        val fakeResponse = ResponseResult<LoginResponse>()
         fakeResponse.isSuccessful = true
         fakeResponse.response = fakeLoginResponse
         coEvery { loginRepository.invoke(any()) } returns fakeResponse
@@ -73,7 +73,7 @@ class LoginViewModelTest {
 
     @Test
     fun `viewModel doLogin returns a Error UiState`() = runTest {
-        var fakeResponse = ResponseResult<LoginResponse>()
+        val fakeResponse = ResponseResult<LoginResponse>()
         fakeResponse.isSuccessful = false
         fakeResponse.response = fakeLoginResponse
         coEvery { loginRepository.invoke(any()) } returns fakeResponse
