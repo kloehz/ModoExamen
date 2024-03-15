@@ -2,6 +2,7 @@ package com.example.modoexamen.features.home.presentation.viewmodel
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.modoexamen.core.UiState
+import com.example.modoexamen.features.home.data.datasource.remote.RemotePromotionsDataSource
 import com.example.modoexamen.features.home.data.model.CategoriesWhitelist
 import com.example.modoexamen.features.home.data.model.Category
 import com.example.modoexamen.features.home.data.model.Content
@@ -13,7 +14,9 @@ import com.example.modoexamen.features.home.data.model.Promotions
 import com.example.modoexamen.features.home.data.model.Row
 import com.example.modoexamen.features.home.data.model.TagExtra
 import com.example.modoexamen.features.home.data.provider.PromotionsRetrofitProvider
+import com.example.modoexamen.features.home.data.service.PromotionsApiService
 import com.example.modoexamen.features.home.domain.repository.PromotionsRepository
+import com.example.modoexamen.features.home.domain.usecase.PromotionsRepositoryImplement
 import com.example.modoexamen.shared.model.ResponseResult
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -28,16 +31,22 @@ import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import retrofit2.Retrofit
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class PromotionsViewModelTest {
+    private lateinit var promotionsApiBaseUrl: Retrofit
+    // private lateinit var dataSource: RemotePromotionsDataSource
+    private lateinit var promotionsRepository: PromotionsRepositoryImplement
     private lateinit var viewModel: PromotionsViewModel
-    private lateinit var promotionsRepository: PromotionsRepository
     private lateinit var fakePromotionsResponse: Promotions
+
 
     @Before
     fun setup() {
+        promotionsApiBaseUrl = PromotionsRetrofitProvider.getInstanceOrInitialize()
+        //dataSource = RemotePromotionsDataSource(promotionsApiBaseUrl.create(PromotionsApiService::class.java))
         promotionsRepository = mockk()
         viewModel = PromotionsViewModel(promotionsRepository)
         fakePromotionsResponse = Promotions(

@@ -1,7 +1,6 @@
 package com.example.modoexamen.features.home.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.compose.ui.platform.ComposeView
@@ -21,9 +20,9 @@ import com.example.modoexamen.features.feed.presentation.viewmodel.FeedViewModel
 import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.presentation.components.AccountFragment
 import com.example.modoexamen.features.home.presentation.viewmodel.HomeViewModel
+import com.example.modoexamen.shared.components.decorators.FirstItemPaddingDecoration
 import com.example.modoexamen.shared.utils.isSmallScreen
 import kotlinx.coroutines.launch
-import androidx.fragment.app.FragmentManager
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
@@ -101,6 +100,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         viewPager.offscreenPageLimit = 1
         viewPager.setPageTransformer(pageTransformer)
+        viewPager.addItemDecoration(FirstItemPaddingDecoration(resources.getDimensionPixelOffset(R.dimen.home_initial_padding)))
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
     }
@@ -115,7 +115,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.feedItem.visibility = View.GONE
         val feedSize = if(feedItem.size > 5) 5 else feedItem.size
         for(i in 0 until feedSize){
-            var composeView = ComposeView(requireContext())
+            val composeView = ComposeView(requireContext())
             composeView.setContent {
                 FeedItemComposable(feedItem = feedItem[i])
             }

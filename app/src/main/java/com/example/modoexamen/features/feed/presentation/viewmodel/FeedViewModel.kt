@@ -1,8 +1,6 @@
 package com.example.modoexamen.features.feed.presentation.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -16,12 +14,10 @@ import kotlinx.coroutines.launch
 
 internal class FeedViewModel(private val repo: FeedRepository): ViewModel() {
     private val feedStateFlow = MutableStateFlow<UiState<FeedResponse>>(UiState.Initial())
-    // Example to know how to composable items can change state
-    // var isShowingShimmer by mutableStateOf(true)
 
     fun getFeed(request: FeedRequest? = null) = viewModelScope.launch {
         feedStateFlow.value = UiState.Loading()
-        var result = repo.invoke(request)
+        val result = repo.invoke(request)
         if( result.isSuccessful ) {
             feedStateFlow.value = UiState.Success(result.response!!)
         } else {

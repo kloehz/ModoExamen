@@ -6,72 +6,30 @@ import com.example.modoexamen.features.home.data.model.Me
 import com.example.modoexamen.features.home.data.service.HomeApiService
 import com.example.modoexamen.shared.model.ErrorResponse
 import com.example.modoexamen.shared.model.ResponseResult
+import com.example.modoexamen.shared.utils.handleError
+import com.example.modoexamen.shared.utils.handleSuccess
 import com.google.gson.Gson
 import retrofit2.HttpException
 
 internal class RemoteHomeDataSource(private val apiService: HomeApiService): HomeDataSource {
     override suspend fun getMe(): ResponseResult<Me> {
         val result = ResponseResult<Me>()
-        val gson = Gson()
         try {
             val response = apiService.getMe()
-            result.isSuccessful = response.isSuccessful
-            if(response.isSuccessful) {
-                result.response = response.body()
-            } else {
-                val errorBody = response.errorBody()?.string()
-                if(errorBody != null) {
-                    val errorResponse = gson.fromJson(errorBody, ErrorResponse::class.java)
-                    result.internalError = errorResponse.internalCode
-                }
-            }
+            handleSuccess<Me>(response, result)
         }catch (e: Exception){
-            when(e) {
-                is HttpException -> {
-                    val errorBody = e.response()?.errorBody()?.string()
-                    if(errorBody != null) {
-                        val errorResponse = gson.fromJson(errorBody, ErrorResponse::class.java)
-                        result.internalError = errorResponse.internalCode
-                    } else {
-                        result.error = e.message.toString()
-                    }
-                } else -> {
-                result.error = e.message.toString()
-                }
-            }
+            handleError<Me>(e, result)
         }
         return result
     }
 
     override suspend fun getAccountsAmount(bankId: String): ResponseResult<List<BankAccount>> {
         val result = ResponseResult<List<BankAccount>>()
-        val gson = Gson()
         try {
             val response = apiService.getAccountsAmount(bankId)
-            result.isSuccessful = response.isSuccessful
-            if(response.isSuccessful) {
-                result.response = response.body()
-            } else {
-                val errorBody = response.errorBody()?.string()
-                if(errorBody != null) {
-                    val errorResponse = gson.fromJson(errorBody, ErrorResponse::class.java)
-                    result.internalError = errorResponse.internalCode
-                }
-            }
+            handleSuccess<List<BankAccount>>(response, result)
         } catch (e: Exception) {
-            when(e) {
-                is HttpException -> {
-                    val errorBody = e.response()?.errorBody()?.string()
-                    if(errorBody != null) {
-                        val errorResponse = gson.fromJson(errorBody, ErrorResponse::class.java)
-                        result.internalError = errorResponse.internalCode
-                    } else {
-                        result.error = e.message.toString()
-                    }
-                } else -> {
-                    result.error = e.message.toString()
-                }
-            }
+            handleError<List<BankAccount>>(e, result)
         }
         return result
     }

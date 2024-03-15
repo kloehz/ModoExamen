@@ -1,7 +1,6 @@
-package com.example.modoexamen.features.login.data.repository
+package com.example.modoexamen.features.login.data.datasource.remote
 
 import com.example.modoexamen.application.FAKE_LOGIN_DATA
-import com.example.modoexamen.features.login.data.datasource.remote.LoginDataSource
 import com.example.modoexamen.features.login.data.model.LoginResponse
 import com.example.modoexamen.features.login.domain.usecase.LoginRepositoryImplement
 import com.example.modoexamen.shared.model.ResponseResult

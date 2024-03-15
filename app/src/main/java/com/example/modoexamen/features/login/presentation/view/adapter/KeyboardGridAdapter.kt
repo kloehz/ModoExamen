@@ -19,10 +19,9 @@ class KeyboardGridAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemBinding = FragmentKeyboardButtonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val holder = ViewHolder(itemBinding, parent.context)
+        val holder = ViewHolder(itemBinding)
 
         itemBinding.root.setOnClickListener {
-            // Here we take the touch position if it is != -1
             val position =
                 holder.bindingAdapterPosition.takeIf { it != DiffUtil.DiffResult.NO_POSITION }
                     ?: return@setOnClickListener
@@ -41,7 +40,7 @@ class KeyboardGridAdapter(
         fun onNumberClick(itemPressed: String)
     }
 
-     inner class ViewHolder(private val binding: FragmentKeyboardButtonBinding, private val context: Context): RecyclerView.ViewHolder(binding.root) {
+     inner class ViewHolder(private val binding: FragmentKeyboardButtonBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Pair<String, String>){
             if(item.first == "DELETE"){
                 binding.imageView.setImageResource(R.drawable.delete_arrow)

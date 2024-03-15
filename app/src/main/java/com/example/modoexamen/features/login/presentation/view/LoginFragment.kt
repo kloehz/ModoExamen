@@ -70,7 +70,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), KeyboardGridAdapter.OnN
             withContext(Dispatchers.IO){
                 val loggedUserDao = DataBasesProvider(requireContext()).provide()
                 val (_, firstName, lastName) = loggedUserDao.getLoggedUserInfo()
-                binding.nameTextView.text = "$firstName $lastName"
+                "$firstName $lastName".also { binding.nameTextView.text = it }
             }
         }
         setInitialComponentProperties()

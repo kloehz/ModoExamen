@@ -15,7 +15,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.modoexamen.R
@@ -28,6 +27,8 @@ import com.example.modoexamen.features.home.data.service.PromotionsApiService
 import com.example.modoexamen.features.home.domain.usecase.PromotionsRepositoryImplement
 import com.example.modoexamen.features.home.presentation.viewmodel.PromotionsViewModel
 import com.example.modoexamen.features.home.presentation.viewmodel.PromotionsViewModelFactory
+import com.example.modoexamen.shared.components.decorators.FirstItemPaddingDecoration
+import com.example.modoexamen.shared.utils.isSmallScreen
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -41,7 +42,8 @@ class PromotionsPagerFragment : Fragment(R.layout.fragment_promotions_pager) {
         PromotionsViewModelFactory(
             PromotionsRepositoryImplement(
                 RemotePromotionsDataSource(
-                    PromotionsRetrofitProvider.getInstanceOrInitialize().create(PromotionsApiService::class.java)
+                    PromotionsRetrofitProvider.getInstanceOrInitialize()
+                        .create(PromotionsApiService::class.java)
                 )
             )
         )
@@ -56,18 +58,18 @@ class PromotionsPagerFragment : Fragment(R.layout.fragment_promotions_pager) {
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.promotionsState().collect{state ->
-                    when(state) {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.promotionsState().collect { state ->
+                    when (state) {
                         is UiState.Initial -> {}
                         is UiState.Loading -> {
-                            Log.d("Promotions: ", "Loading")
                         }
+
                         is UiState.Success -> {
-                            Log.d("Promotions: ", "Success")
                             promotionsLength = state.data.cards.size
                             setupPromotionsViewPager(state.data.cards)
                         }
+
                         is UiState.Error -> {}
                     }
                 }
@@ -75,31 +77,40 @@ class PromotionsPagerFragment : Fragment(R.layout.fragment_promotions_pager) {
         }
     }
 
-    private fun setupPromotionsViewPager(cards: List<PromotionCard>){
+    private fun setupPromotionsViewPager(cards: List<PromotionCard>) {
         viewPager = binding.promotionsPager
-        val pageTranslationX = 120
+        val pageSpacer = if(isSmallScreen(requireContext())) R.dimen.viewpager_next_item_visible_small_device else R.dimen.viewpager_next_item_visible_large_device
+        val pageTranslationX = resources.getDimensionPixelOffset(pageSpacer) //250
         val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
             page.translationX = -pageTranslationX * position
         }
         viewPager.offscreenPageLimit = 2
         viewPager.setPageTransformer(pageTransformer)
+        viewPager.addItemDecoration(
+            FirstItemPaddingDecoration(
+                resources.getDimensionPixelOffset(R.dimen.home_initial_padding)
+            )
+        )
         val pagerAdapter = ScreenSlidePagerAdapter(this, cards)
         viewPager.adapter = pagerAdapter
     }
 
-    private inner class ScreenSlidePagerAdapter(fa: Fragment, private val cardsList: List<PromotionCard>) : FragmentStateAdapter(fa) {
+    private inner class ScreenSlidePagerAdapter(
+        fa: Fragment,
+        private val cardsList: List<PromotionCard>
+    ) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = promotionsLength
         override fun createFragment(position: Int): Fragment {
             val imageView = ImageView(requireContext())
             val windowWidth = resources.displayMetrics.widthPixels
             val layoutParams = ViewGroup.MarginLayoutParams(
-                windowWidth - 250, (windowWidth * 0.245).roundToInt()
+                windowWidth - 200, (windowWidth * 0.245).roundToInt()
             )
             imageView.layoutParams = layoutParams
             Glide.with(requireContext())
                 .load(cardsList[position].content.image.optionalImagesPack.landscapeApp)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                .apply(RequestOptions.bitmapTransform(RoundedCorners((100  / resources.displayMetrics.density).toInt())))
+                .apply(RequestOptions.bitmapTransform(RoundedCorners((100 / resources.displayMetrics.density).toInt())))
                 .into(imageView)
             return ImageViewFragment(imageView)
         }

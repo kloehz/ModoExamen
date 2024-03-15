@@ -139,7 +139,7 @@ data class Qr(
     @SerializedName("operationDate") val operationDate: String,
     @SerializedName("operationType") val operationType: String,
     @SerializedName("rawQR") val rawQR: String,
-    @SerializedName("referenceLabel") val referenceLabel: Int,
+    @SerializedName("referenceLabel") val referenceLabel: String,
     @SerializedName("reverseDomain") val reverseDomain: String,
     @SerializedName("selectPaymentMethod") val selectPaymentMethod: Boolean,
     val status: String,
@@ -147,8 +147,8 @@ data class Qr(
     @SerializedName("supportedPaymentMethods") val supportedPaymentMethods: List<SupportedPaymentMethod>,
     @SerializedName("supportedPaymentTypes") val supportedPaymentTypes: List<String>,
     @SerializedName("terminalId") val terminalId: String,
-    @SerializedName("totalAmount") val totalAmount: Int,
-    @SerializedName("transactionAmount") val transactionAmount: Int,
+    @SerializedName("totalAmount") val totalAmount: Double,
+    @SerializedName("transactionAmount") val transactionAmount: Double,
     @SerializedName("unsupportedPaymentMethods") val unsupportedPaymentMethods: List<UnsupportedPaymentMethod>
 )
 
@@ -293,7 +293,7 @@ data class RawParsedQR(
     @SerializedName("operationDate") val operationDate: String,
     @SerializedName("operationType") val operationType: String,
     @SerializedName("rawQR") val rawQR: String,
-    @SerializedName("referenceLabel") val referenceLabel: Int,
+    @SerializedName("referenceLabel") val referenceLabel: String,
     @SerializedName("reverseDomain") val reverseDomain: String,
     @SerializedName("selectPaymentMethod") val selectPaymentMethod: Boolean,
     val status: String,
@@ -301,14 +301,14 @@ data class RawParsedQR(
     @SerializedName("supportedPaymentMethods") val supportedPaymentMethods: List<SupportedPaymentMethod>,
     @SerializedName("supportedPaymentTypes") val supportedPaymentTypes: List<String>,
     @SerializedName("terminalId") val terminalId: String,
-    @SerializedName("totalAmount") val totalAmount: Int,
-    @SerializedName("transactionAmount") val transactionAmount: Int,
+    @SerializedName("totalAmount") val totalAmount: Double,
+    @SerializedName("transactionAmount") val transactionAmount: Double,
     @SerializedName("unsupportedPaymentMethods") val unsupportedPaymentMethods: List<UnsupportedPaymentMethod>
 )
 
 data class Reward(
     val amount: Double,
-    @SerializedName("calculatedCap") val calculatedCap: Int,
+    @SerializedName("calculatedCap") val calculatedCap: Double,
     @SerializedName("cardId") val cardId: String,
     @SerializedName("discountMode") val discountMode: String,
     @SerializedName("forceLabel") val forceLabel: Any,

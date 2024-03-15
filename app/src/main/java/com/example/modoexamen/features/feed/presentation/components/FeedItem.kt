@@ -1,10 +1,10 @@
 package com.example.modoexamen.features.feed.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -57,42 +57,124 @@ fun FeedItemComposable(feedItem: FeedResponseItem?, showShimmer: Boolean = false
                     CircleShape
                 )
         )
-        Column(modifier = Modifier.padding(start = 12.dp)) {
+        Box(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.padding(start = 12.dp, end = 8.dp)) {
+                Text(
+                    text = feedItem?.feedData?.payment?.merchantName ?: "",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(R.color.primaryBlack),
+                    maxLines = 1,
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 70.dp)
+                        .background(
+                            shimmerBackground(
+                                targetValue = 1300f,
+                                showShimmer = showShimmer
+                            )
+                        )
+                )
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                ) {}
+                Text(
+                    text = feedItem?.type ?: "",
+                    fontSize = 14.sp,
+                    color = colorResource(R.color.secondaryGray60),
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 100.dp)
+                        .background(
+                            shimmerBackground(
+                                targetValue = 1300f,
+                                showShimmer = showShimmer
+                            )
+                        )
+                )
+            }
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = feedItem?.feedData?.payment?.merchantName ?: "",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                color = colorResource(R.color.primaryBlack),
-                modifier = Modifier
-                    .defaultMinSize(minWidth = 70.dp)
-                    .background(shimmerBackground(targetValue = 1300f, showShimmer = showShimmer))
+                text = "+",
+                color = colorResource(R.color.primaryPaymentLight)
             )
-            Box(
-                modifier = Modifier
-                    .size(8.dp)
-            ) {}
             Text(
-                text = feedItem?.type ?: "",
-                fontSize = 14.sp,
-                color = colorResource(R.color.secondaryGray60),
+                text = amountFormatted ?: "",
+                fontSize = 20.sp,
+                color = colorResource(R.color.primaryBlack),
+                textAlign = TextAlign.End,
                 modifier = Modifier
-                    .defaultMinSize(minWidth = 100.dp)
                     .background(shimmerBackground(targetValue = 1300f, showShimmer = showShimmer))
             )
         }
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = amountFormatted ?: "",
-            fontSize = 20.sp,
-            color = colorResource(R.color.primaryBlack),
-            textAlign = TextAlign.End,
+    }
+}
+
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun FeedItemComposablee() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 6.dp)
+    ) {
+        GlideImage(
+            model = "https://assets.mobile.preprod.playdigital.com.ar/images/merchants/categories/Ctg-OtrosyTodos.png",
+            contentDescription = "Failed",
+            contentScale = ContentScale.Crop,
             modifier = Modifier
-                .defaultMinSize(minWidth = 100.dp)
-                .background(shimmerBackground(targetValue = 1300f, showShimmer = showShimmer))
+                .clip(CircleShape)
+                .size(48.dp)
+                .defaultMinSize(minWidth = 48.dp)
+                .background(
+                    shimmerBackground(targetValue = 1300f, showShimmer = false),
+                    CircleShape
+                )
         )
+        Box(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.padding(start = 12.dp)) {
+                Text(
+                    text = "Title Title Title",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(R.color.primaryBlack),
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 70.dp)
+                        .background(shimmerBackground(targetValue = 1300f, showShimmer = false))
+                )
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                ) {}
+                Text(
+                    text = "subtitle",
+                    fontSize = 14.sp,
+                    color = colorResource(R.color.secondaryGray60),
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 100.dp)
+                        .background(shimmerBackground(targetValue = 1300f, showShimmer = false))
+                )
+            }
+        }
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "+",
+                color = colorResource(R.color.primaryPaymentLight)
+            )
+            Text(
+                text = "100234,12",
+                fontSize = 20.sp,
+                color = colorResource(R.color.primaryBlack),
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .background(shimmerBackground(targetValue = 1300f, showShimmer = false))
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun FeedItemComposablePreview() {}
+fun FeedItemComposablePreview() {
+    return FeedItemComposablee()
+}

@@ -21,7 +21,7 @@ internal class LoginViewModel(private val repo: LoginRepository): ViewModel() {
 
     fun doLogin(password: String) = viewModelScope.launch {
         loginStateFlow.value = UiState.Loading()
-        var fakeData = FAKE_LOGIN_DATA.copy()
+        val fakeData = FAKE_LOGIN_DATA.copy()
         fakeData.password = password
         val result = repo.invoke(fakeData)
         if(result.isSuccessful){
